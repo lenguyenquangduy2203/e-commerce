@@ -22,18 +22,26 @@
 
 3. Fill in the required environment variables in the [.env](http://_vscodecontentref_/3) file:
 
+## Building the Containers
+
+1. Build the Container:
+
+    ```sh
+    docker compose up --build
+    ```
+
 ## Running the Containers
 
 1. Start the containers using Docker Compose:
 
     ```sh
-    docker-compose up -d
+    docker compose up -d
     ```
 
 2. Verify that the containers are running:
 
     ```sh
-    docker-compose ps
+    docker compose ps
     ```
 
 ## Stopping the Containers
@@ -48,6 +56,7 @@
 
 - MySQL: `localhost:3307`
 - Elasticsearch: `localhost:9200`
+- Catalog: `localhost:8080`
 
 ## Notes
 
