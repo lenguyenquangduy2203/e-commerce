@@ -31,7 +31,7 @@ services:
 
   backend:
     build: ./catalog
-    container_name: catalog_backend
+    container_name: catalog-backend
     restart: always
     depends_on:
       - mysql
@@ -47,6 +47,18 @@ services:
       CORS_ALLOWED_METHODS: ${CORS_ALLOWED_METHODS}
     networks:
       - e_commerce_network
+
+  frontend:
+    build: ./frontend
+    container_name: catalog-frontend
+    restart: always
+    depends_on:
+      - backend
+    ports:
+      - "8000:8000"
+    networks:
+      - e_commerce_network
+
 
 volumes:
   mysql_data:
