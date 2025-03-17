@@ -1,3 +1,4 @@
+package edu.webdev.catalog.infrastructure.persistence.models;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.persistence.Id;
