@@ -32,12 +32,12 @@ public class JwtProvider {
         }
     }
 
-    public String createToken(UserId id) {
-        return generateTokenWithUserIdAsSubject(new HashMap<>(), id);
+    public String createToken(UserId subject) {
+        return generateTokenWithUserIdAsSubject(new HashMap<>(), subject);
     }
 
-    public String createTokenWithClaims(UserId id, Map<String, Object> claims) {
-        return generateTokenWithUserIdAsSubject(claims, id);
+    public String createToken(UserId subject, Map<String, Object> extraClaims) {
+        return generateTokenWithUserIdAsSubject(extraClaims, subject);
     }
 
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
@@ -45,13 +45,15 @@ public class JwtProvider {
         return claimsResolver.apply(claims);
     }
 
-    public UserId extractUserId(String token) {
-        return UserId.fromString(extractClaim(token, Claims::getSubject));
+    public String extractSubject(String token) {
+        return extractClaim(token, Claims::getSubject);
     }
 
-    public boolean isTokenValid(String token, UserId id) {
-        final UserId extractedId = extractUserId(token);
-        return id.equals(extractedId) && !isTokenExpired(token);
+    public boolean isTokenValid(String token) {
+        // validates the token's signature using the secret key in the extractAllClaims
+        // prepare for future use if there are extra claims needed to be validate
+        extractAllClaims(token); 
+        return !isTokenExpired(token);
     }
 
     private String generateTokenWithUserIdAsSubject(Map<String, Object> extraClaims, UserId id) {
@@ -81,7 +83,9 @@ public class JwtProvider {
     }
 
     private boolean isTokenExpired(String token) {
-        return extractExpiration(token).before(new Date());
+        Date expiration = extractExpiration(token);
+        // To account for clock skew between systems, add a small buffer (e.g., 1 minute) when checking token expiration.
+        return expiration.before(new Date(System.currentTimeMillis() - 60000));
     }
 
     private Key getSignInKey() {
