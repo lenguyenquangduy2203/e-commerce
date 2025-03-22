@@ -1,5 +1,6 @@
 package edu.webdev.catalog.infrastructure.security.profile;
 
+import java.util.Optional;
 import java.util.regex.Pattern;
 
 import edu.webdev.catalog.shared.exceptions.InvalidEmailException;
@@ -31,5 +32,22 @@ public class Email {
         }
 
         return new Email(email);
+    }
+
+    /**
+     * This method only be used when failures are expected and part of the normal workflow.
+     * @param email a String that need to be validated.
+     * @return an Optional of Email
+     */
+    public static Optional<Email> safeCreate(String email) {
+        if (email == null || email.isBlank()) {
+            return Optional.empty();
+        }
+        
+        if (!EMAIL_PATTERN.matcher(email).matches()) {
+            return Optional.empty();
+        }
+
+        return Optional.of(new Email(email));
     }
 }
