@@ -50,10 +50,15 @@ public class JwtProvider {
     }
 
     public boolean isTokenValid(String token) {
-        // validates the token's signature using the secret key in the extractAllClaims
-        // prepare for future use if there are extra claims needed to be validate
-        extractAllClaims(token); 
-        return !isTokenExpired(token);
+        try {
+            // validates the token's signature using the secret key in the extractAllClaims
+            // prepare for future use if there are extra claims needed to be validate
+            extractAllClaims(token); 
+
+            return !isTokenExpired(token);    
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     private String generateTokenWithUserIdAsSubject(Map<String, Object> extraClaims, UserId id) {
