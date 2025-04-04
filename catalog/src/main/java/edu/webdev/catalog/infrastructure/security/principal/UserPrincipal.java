@@ -8,6 +8,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import edu.webdev.catalog.infrastructure.persistence.models.User;
+import edu.webdev.catalog.infrastructure.security.profile.UserId;
 
 public class UserPrincipal implements UserDetails {
     private transient User user;
@@ -52,4 +53,7 @@ public class UserPrincipal implements UserDetails {
         return true;
     }
 
+    public UserId getId() {
+        return UserId.create(this.user.getId());
+    }
 }

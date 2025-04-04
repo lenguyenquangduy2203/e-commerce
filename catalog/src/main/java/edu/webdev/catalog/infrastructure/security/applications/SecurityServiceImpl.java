@@ -2,12 +2,14 @@ package edu.webdev.catalog.infrastructure.security.applications;
 
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import edu.webdev.catalog.infrastructure.persistence.repositories.UserRepository;
 import edu.webdev.catalog.infrastructure.security.SecurityService;
+import edu.webdev.catalog.infrastructure.security.principal.UserPrincipal;
 import edu.webdev.catalog.infrastructure.security.profile.Email;
 import edu.webdev.catalog.infrastructure.security.profile.Password;
 import edu.webdev.catalog.infrastructure.security.profile.UserId;
@@ -33,17 +35,13 @@ public class SecurityServiceImpl implements SecurityService {
 
     @Override
     public String signIn(Email email, Password password) {
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
-        UserId id = getUserIdByEmail(email);
+        var authentication = authenticationManager.authenticate(
+            new UsernamePasswordAuthenticationToken(email.getValue(), password.getValue())
+        );
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
+        UserId id = userPrincipal.getId();
             
         return jwtProvider.createToken(id);
     }
-
-    private UserId getUserIdByEmail(Email email) {
-        return UserId.create(
-            userRepository.findByEmail(email.getValue())
-            .orElseThrow(() -> new UsernameNotFoundException("Can not find user with email: " + email))
-            .getId());
-    }
-
 }
