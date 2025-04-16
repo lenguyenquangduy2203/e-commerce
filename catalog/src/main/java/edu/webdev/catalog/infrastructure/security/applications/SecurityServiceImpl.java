@@ -1,9 +1,13 @@
 package edu.webdev.catalog.infrastructure.security.applications;
 
+import java.util.List;
+import java.util.Map;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -41,7 +45,9 @@ public class SecurityServiceImpl implements SecurityService {
         );
         if (authentication.getPrincipal() instanceof UserPrincipal userPrincipal) {
             UserId id = userPrincipal.getId();
-            return jwtProvider.createToken(id);
+            List<String> authorities = userPrincipal.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList();
+            
+            return jwtProvider.createToken(id, Map.of("authorities", authorities));
         } else {
             logger.error("Expected UserPrincipal but got: {}", authentication.getPrincipal().getClass().getName());
             throw new IllegalStateException("Authentication principal is not of type UserPrincipal");
