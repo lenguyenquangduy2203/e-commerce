@@ -1,0 +1,69 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: mysql_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - e_commerce_network
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:${ELASTICSEARCH_VERSION}
+    container_name: elasticsearch
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    networks:
+      - e_commerce_network
+
+  backend:
+    build: ./catalog
+    container_name: catalog-backend
+    restart: always
+    depends_on:
+      - mysql
+      - elasticsearch
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: ${SPRING_DATASOURCE_URL}
+      SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME}
+      SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
+      SPRING_ELASTICSEARCH_URIS: ${SPRING_ELASTICSEARCH_URIS}
+      CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS}
+      CORS_ALLOWED_METHODS: ${CORS_ALLOWED_METHODS}
+      JWT_SECRETE_KEY: ${JWT_SECRETE_KEY}
+      JWT_EXPIRATION_TIME: ${JWT_EXPIRATION_TIME}
+    networks:
+      - e_commerce_network
+
+  frontend:
+    build: ./frontend
+    container_name: catalog-frontend
+    restart: always
+    depends_on:
+      - backend
+    ports:
+      - "8000:8000"
+    networks:
+      - e_commerce_network
+
+
+volumes:
+  mysql_data:
+
+networks:
+  e_commerce_network:
