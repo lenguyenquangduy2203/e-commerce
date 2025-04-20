@@ -58,9 +58,24 @@ services:
       - backend
     ports:
       - "8000:8000"
+    environment:
+      BASE_BACKEND_URL: ${BASE_BACKEND_URL}
     networks:
       - e_commerce_network
 
+  dss-dash:
+    build: ./dss-dash
+    container_name: dss-dash-app
+    restart: always
+    depends_on:
+      - frontend
+      - backend
+    ports:
+      - "8050:8050"
+    environment:
+      BASE_BACKEND_URL: ${BASE_BACKEND_URL}
+    networks:
+      - e_commerce_network
 
 volumes:
   mysql_data:
