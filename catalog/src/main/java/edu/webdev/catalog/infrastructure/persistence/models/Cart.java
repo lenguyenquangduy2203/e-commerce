@@ -31,7 +31,6 @@ import java.util.UUID;
 public class Cart {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID userId;
 
     @OneToOne
