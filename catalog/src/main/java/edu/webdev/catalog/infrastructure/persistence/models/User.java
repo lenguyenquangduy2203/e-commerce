@@ -24,6 +24,9 @@ public class User {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
+    @OneToOne(mappedBy = "user")
+    private Cart cart;
+
     @Column(unique = true, nullable = false)
     private String email;
 
