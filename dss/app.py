@@ -1,14 +1,9 @@
 import dash
 import dash_bootstrap_components as dbc
-from dash import html, dcc
-import numpy as np
-import plotly.express as px
+from dash import html
+from views.sample import graph_placeholder
 
-# Generate some example data
-x = np.linspace(0, 10, 100)
-y = np.sin(x)
-
-# Create a Dash app with Bootstrap theme
+# Create the Dash app with Bootstrap
 app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 
 # Layout
@@ -16,11 +11,10 @@ app.layout = dbc.Container([
     dbc.Row([
         dbc.Col(html.H1("Simple DSS Dashboard"), className="mb-4 mt-4")
     ]),
-    dbc.Row([
-        dbc.Col(dcc.Graph(
-            figure=px.line(x=x, y=y, labels={'x': 'X Value', 'y': 'Sin(X)'})
-        ))
-    ])
+
+    graph_placeholder("Sine Wave Placeholder"),
+    graph_placeholder("Cosine Wave Placeholder"),
+    graph_placeholder("Combined Wave Placeholder")
 ], fluid=True)
 
 if __name__ == "__main__":
