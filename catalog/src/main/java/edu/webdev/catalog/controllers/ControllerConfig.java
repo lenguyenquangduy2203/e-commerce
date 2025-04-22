@@ -1,5 +1,6 @@
 package edu.webdev.catalog.controllers;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -12,15 +13,15 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @Configuration
 public class ControllerConfig {
     @Value("${spring.web.cors.allowed-origins}")
-    private List<String> allowedOrigins;
+    private String allowedOrigins;
 
     @Value("${spring.web.cors.allowed-methods}")
-    private List<String> allowedMethods;
+    private String allowedMethods;
 
     @Value("${spring.web.cors.allowed-headers}")
     private List<String> allowedHeaders;
 
-    @Value("${spring.web.cors.allowed-headers}")
+    @Value("${spring.web.cors.exposed-headers}")
     private List<String> exposedHeaders;
 
     @Value("${spring.web.cors.allow-credentials}")
@@ -29,8 +30,8 @@ public class ControllerConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(allowedOrigins);
-        configuration.setAllowedMethods(allowedMethods);
+        configuration.setAllowedOrigins(Arrays.asList(allowedOrigins.split(",")));
+        configuration.setAllowedMethods(Arrays.asList(allowedMethods.split(",")));
         configuration.setAllowedHeaders(allowedHeaders);
         configuration.setExposedHeaders(exposedHeaders);
         configuration.setAllowCredentials(allowCredentials);
