@@ -40,6 +40,7 @@ public class CartItem {
     @JoinColumn(name = "product_id", nullable = false)
     private Product product;
 
+    @Min(value = 0)
     private int quantity;
 
     @Column(precision = 10, scale = 2)
