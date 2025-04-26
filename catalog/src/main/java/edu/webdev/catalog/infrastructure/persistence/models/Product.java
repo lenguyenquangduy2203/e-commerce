@@ -48,6 +48,7 @@ public class Product {
     @Column(length = 3)
     private String currency;
 
+    @Min(value = 0)
     private int stockQuantity;
 
     @Column(length = 100)
