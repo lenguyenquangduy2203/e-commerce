@@ -26,6 +26,7 @@ public interface UserProfileMapper  {
     @Mapping(source = "email", target = "email", qualifiedByName = "fromEmailToString")
     @Mapping(source = "password", target = "password", qualifiedByName = "fromPasswordToString")
     @Mapping(source = "role", target = "role", qualifiedByName = "fromUserRoleToString")
+    @Mapping(target = "cart", ignore = true)
     User toPersistence(UserProfile profile);
 
     @Named("fromUserIdToUUID")
