@@ -1,10 +1,13 @@
 package edu.webdev.catalog.infrastructure.persistence.models;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.persistence.Id;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Column;
+import jakarta.persistence.OneToOne;
+
 import java.util.UUID;
 import lombok.Getter;
 import lombok.Setter;

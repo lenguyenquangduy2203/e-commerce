@@ -7,6 +7,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Column;
 import jakarta.persistence.OneToMany;
+import jakarta.validation.constraints.Min;
 
 import lombok.Getter;
 import lombok.Setter;

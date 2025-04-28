@@ -9,6 +9,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.PrePersist;
+import jakarta.validation.constraints.Min;
 
 import lombok.Getter;
 import lombok.Setter;
