@@ -39,6 +39,9 @@ public class OrderItem {
     @Column(name = "product_name", length = 100, nullable = false)
     private String productName;
 
+    @Column(name = "product_model", nullable = false, length = 100)
+    private String productModel;
+
     @Column(name = "price_at_purchase", precision = 10, scale = 2, nullable = false)
     private BigDecimal priceAtPurchase;
 
