@@ -23,8 +23,8 @@ import edu.webdev.catalog.shared.utils.Money;
 public interface ProductMapper {
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    @Mapping(target = "amount", expression = "java(mapAmount(Money price))")
-    @Mapping(target = "currency", expression = "java(mapCurrency(Money price))")
+    @Mapping(target = "amount", expression = "java(mapAmount(command.price()))")
+    @Mapping(target = "currency", expression = "java(mapCurrency(command.price()))")
     @Mapping(target = "cartItems", ignore = true)
     void updateProductFromCommand(UpdateProductCommand command, @MappingTarget Product product);
 
