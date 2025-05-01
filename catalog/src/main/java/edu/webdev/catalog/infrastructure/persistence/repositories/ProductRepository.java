@@ -1,0 +1,17 @@
+package edu.webdev.catalog.infrastructure.persistence.repositories;
+
+import java.util.Optional;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+
+import edu.webdev.catalog.infrastructure.persistence.models.Product;
+import edu.webdev.catalog.infrastructure.persistence.repositories.projections.ProductDetail;
+
+public interface ProductRepository extends JpaRepository<Product, Long>, JpaSpecificationExecutor<Product> {
+    Optional<ProductDetail> findProductDetailById(Long id);
+    <T> Page<T> findAll(Specification<Product> spec, Pageable pageable, Class<T> projection);
+}
