@@ -1,26 +1,22 @@
-# customer_analysis/processor.py
+import pandas as pd
 from datetime import datetime, timedelta
-from collections import defaultdict
-from handler import fetch_customer_orders
 
-def classify_customers(days=30):
-    raw_data = fetch_customer_orders()
+def classify_customers(orders: pd.DataFrame, days: int = 30) -> pd.DataFrame:
+    """Gắn nhãn 'New' hoặc 'Returning' cho từng đơn hàng trong khoảng N ngày gần đây."""
     cutoff = datetime.now() - timedelta(days=days)
-    stats = defaultdict(int)
+    recent_orders = orders[orders["order_date"] >= cutoff].copy()
 
-    user_first_order = {}
+    # Lấy ngày mua hàng đầu tiên của từng khách
+    first_orders = orders.groupby("user_id")["order_date"].min()
+    recent_orders["first_order_date"] = recent_orders["user_id"].map(first_orders)
 
-    for user_id, first_order, order_date in raw_data:
-        first_dt = datetime.strptime(first_order, '%Y-%m-%d')
-        order_dt = datetime.strptime(order_date, '%Y-%m-%d')
+    # Phân loại theo thời gian đặt hàng đầu tiên
+    recent_orders["customer_type"] = recent_orders["first_order_date"].apply(
+        lambda date: "New" if date >= cutoff else "Returning"
+    )
 
-        if user_id not in user_first_order:
-            user_first_order[user_id] = first_dt
+    return recent_orders
 
-        if order_dt >= cutoff:
-            if first_dt >= cutoff:
-                stats['New'] += 1
-            else:
-                stats['Returning'] += 1
-
-    return stats
+def summarize_customer_types(labeled_orders: pd.DataFrame) -> dict:
+    """Tính tổng số đơn hàng theo loại khách hàng."""
+    return labeled_orders["customer_type"].value_counts().to_dict()
