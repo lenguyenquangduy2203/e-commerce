@@ -17,6 +17,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import edu.webdev.catalog.infrastructure.security.applications.JwtAuthenticationFilter;
+import edu.webdev.catalog.infrastructure.security.profile.UserRole;
 import lombok.AllArgsConstructor;
 
 @Configuration
@@ -50,6 +51,7 @@ public class SecurityConfig {
         https.csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(request -> request
                 .requestMatchers("/api/test").permitAll()
+                .requestMatchers("/api/analytics/**").hasAnyRole(UserRole.ROLE_MANAGER.toString())
                 .anyRequest().authenticated())
             .sessionManagement(session -> session
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
