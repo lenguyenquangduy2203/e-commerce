@@ -1,5 +1,6 @@
 import { h } from "preact";
 import { useState } from "preact/hooks";
+import { RoleManager } from "../utils/RoleManager.ts";
 
 export default function SignInIsland() {
   const [email, setEmail] = useState("");
@@ -22,15 +23,17 @@ export default function SignInIsland() {
         throw new Error(errorResponse.error || "Invalid credentials");
       }
 
-      const { token, user } = await response.json();
+      const { token } = await response.json();
       localStorage.setItem(
         "user_token",
         JSON.stringify({ header: "Authorization", token: `Bearer ${token}` })
       );
 
-      if (user.role === "admin") {
+      const userRole = RoleManager.getUserRole(token);
+
+      if (userRole === "admin") {
         globalThis.location.href = "/AdminDashboard";
-      } else if (user.role === "customer") {
+      } else if (userRole === "customer") {
         globalThis.location.href = "/UserDashboard";
       } else {
         setError("Unauthorized role. Please contact support.");

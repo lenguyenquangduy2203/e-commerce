@@ -1,3 +1,5 @@
+const BACKEND_URL = Deno.env.get("BASE_BACKEND_URL") || "http://catalog-backend:8080";
+
 export const fetchInstance = async (
   url: string,
   options: RequestInit = {}
@@ -10,7 +12,7 @@ export const fetchInstance = async (
   let userToken;
   try {
     userToken = JSON.parse(localStorage.getItem("user_token") || "null");
-  } catch (error) {
+  } catch (_error) {
     userToken = undefined;
   }
   if (userToken) {
@@ -21,7 +23,7 @@ export const fetchInstance = async (
   options.headers = headers;
 
   // Make the request
-  const response = await fetch(`http://localhost:8080${url}`, options);
+  const response = await fetch(`${BACKEND_URL}${url}`, options);
 
   // Handle errors
   if (!response.ok) {
