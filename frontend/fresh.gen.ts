@@ -2,24 +2,38 @@
 // This file SHOULD be checked into source version control.
 // This file is automatically updated during development when running `dev.ts`.
 
+import * as $SignIn from "./routes/SignIn.tsx";
+import * as $SignUp from "./routes/SignUp.tsx";
+import * as $UserDashboard from "./routes/UserDashboard.tsx";
 import * as $_404 from "./routes/_404.tsx";
 import * as $_app from "./routes/_app.tsx";
-import * as $api_joke from "./routes/api/joke.ts";
-import * as $greet_name_ from "./routes/greet/[name].tsx";
 import * as $index from "./routes/index.tsx";
-import * as $Counter from "./islands/Counter.tsx";
+import * as $nav from "./routes/nav.tsx";
+import * as $product from "./routes/product.tsx";
+import * as $test_handler from "./routes/test/handler.ts";
+import * as $test_index from "./routes/test/index.tsx";
+import * as $utils_product from "./routes/utils/product.ts";
+import * as $SignIn_1 from "./islands/SignIn.tsx";
+import * as $SignUp_1 from "./islands/SignUp.tsx";
 import type { Manifest } from "$fresh/server.ts";
 
 const manifest = {
   routes: {
+    "./routes/SignIn.tsx": $SignIn,
+    "./routes/SignUp.tsx": $SignUp,
+    "./routes/UserDashboard.tsx": $UserDashboard,
     "./routes/_404.tsx": $_404,
     "./routes/_app.tsx": $_app,
-    "./routes/api/joke.ts": $api_joke,
-    "./routes/greet/[name].tsx": $greet_name_,
     "./routes/index.tsx": $index,
+    "./routes/nav.tsx": $nav,
+    "./routes/product.tsx": $product,
+    "./routes/test/handler.ts": $test_handler,
+    "./routes/test/index.tsx": $test_index,
+    "./routes/utils/product.ts": $utils_product,
   },
   islands: {
-    "./islands/Counter.tsx": $Counter,
+    "./islands/SignIn.tsx": $SignIn_1,
+    "./islands/SignUp.tsx": $SignUp_1,
   },
   baseUrl: import.meta.url,
 } satisfies Manifest;
