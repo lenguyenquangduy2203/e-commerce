@@ -18,17 +18,20 @@ export default function SignInIsland() {
       });
 
       if (!response.ok) {
-        throw new Error("Invalid credentials");
+        const errorResponse = await response.json();
+        throw new Error(errorResponse.error || "Invalid credentials");
       }
 
-      const { token, role } = await response.json();
+      const { token, user } = await response.json();
       localStorage.setItem(
         "user_token",
         JSON.stringify({ header: "Authorization", token: `Bearer ${token}` })
       );
 
-      if (role === "user") {
-        window.location.href = "/UserDashboard";
+      if (user.role === "admin") {
+        globalThis.location.href = "/AdminDashboard";
+      } else if (user.role === "customer") {
+        globalThis.location.href = "/UserDashboard";
       } else {
         setError("Unauthorized role. Please contact support.");
       }

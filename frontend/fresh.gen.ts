@@ -2,38 +2,62 @@
 // This file SHOULD be checked into source version control.
 // This file is automatically updated during development when running `dev.ts`.
 
+import * as $AdminDashboard from "./routes/AdminDashboard.tsx";
 import * as $SignIn from "./routes/SignIn.tsx";
 import * as $SignUp from "./routes/SignUp.tsx";
 import * as $UserDashboard from "./routes/UserDashboard.tsx";
 import * as $_404 from "./routes/_404.tsx";
 import * as $_app from "./routes/_app.tsx";
+import * as $api_cart_handler from "./routes/api/cart/handler.ts";
+import * as $api_login_handler from "./routes/api/login/handler.ts";
+import * as $api_orders_handler from "./routes/api/orders/handler.ts";
+import * as $api_products_handler from "./routes/api/products/handler.ts";
+import * as $api_signup_handler from "./routes/api/signup/handler.ts";
+import * as $api_user_handler from "./routes/api/user/handler.ts";
+import * as $cart from "./routes/cart.tsx";
 import * as $index from "./routes/index.tsx";
 import * as $nav from "./routes/nav.tsx";
+import * as $order from "./routes/order.tsx";
 import * as $product from "./routes/product.tsx";
 import * as $test_handler from "./routes/test/handler.ts";
 import * as $test_index from "./routes/test/index.tsx";
-import * as $utils_product from "./routes/utils/product.ts";
+import * as $userProfile from "./routes/userProfile.tsx";
+import * as $AdminDashboardIsland from "./islands/AdminDashboardIsland.tsx";
+import * as $CartIsland from "./islands/CartIsland.tsx";
 import * as $SignIn_1 from "./islands/SignIn.tsx";
 import * as $SignUp_1 from "./islands/SignUp.tsx";
+import * as $UserDashboardIsland from "./islands/UserDashboardIsland.tsx";
 import type { Manifest } from "$fresh/server.ts";
 
 const manifest = {
   routes: {
+    "./routes/AdminDashboard.tsx": $AdminDashboard,
     "./routes/SignIn.tsx": $SignIn,
     "./routes/SignUp.tsx": $SignUp,
     "./routes/UserDashboard.tsx": $UserDashboard,
     "./routes/_404.tsx": $_404,
     "./routes/_app.tsx": $_app,
+    "./routes/api/cart/handler.ts": $api_cart_handler,
+    "./routes/api/login/handler.ts": $api_login_handler,
+    "./routes/api/orders/handler.ts": $api_orders_handler,
+    "./routes/api/products/handler.ts": $api_products_handler,
+    "./routes/api/signup/handler.ts": $api_signup_handler,
+    "./routes/api/user/handler.ts": $api_user_handler,
+    "./routes/cart.tsx": $cart,
     "./routes/index.tsx": $index,
     "./routes/nav.tsx": $nav,
+    "./routes/order.tsx": $order,
     "./routes/product.tsx": $product,
     "./routes/test/handler.ts": $test_handler,
     "./routes/test/index.tsx": $test_index,
-    "./routes/utils/product.ts": $utils_product,
+    "./routes/userProfile.tsx": $userProfile,
   },
   islands: {
+    "./islands/AdminDashboardIsland.tsx": $AdminDashboardIsland,
+    "./islands/CartIsland.tsx": $CartIsland,
     "./islands/SignIn.tsx": $SignIn_1,
     "./islands/SignUp.tsx": $SignUp_1,
+    "./islands/UserDashboardIsland.tsx": $UserDashboardIsland,
   },
   baseUrl: import.meta.url,
 } satisfies Manifest;

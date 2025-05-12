@@ -25,12 +25,13 @@ export default function SignUpIsland() {
       });
 
       if (!response.ok) {
-        throw new Error("Failed to create an account.");
+        const errorResponse = await response.json();
+        throw new Error(errorResponse.error || "Failed to create an account.");
       }
 
-      const { message } = await response.json();
-      alert(message || "Account created successfully!");
-      window.location.href = "/SignIn";
+      const { _user } = await response.json();
+      alert("Account created successfully!");
+      globalThis.location.href = "/SignIn";
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : "An unknown error occurred.";
       setError(errorMessage);
@@ -38,7 +39,7 @@ export default function SignUpIsland() {
   };
 
   return (
-    <form onSubmit={handleSignUp} class="bg-white/10 backdrop-blur-lg p-6 rounded-lg shadow-md w-full max-w-sm">
+    <form onSubmit={handleSignUp} >
       {error && <p class="text-red-500 text-sm mb-4">{error}</p>}
       <div class="mb-4">
         <label class="block text-white text-sm font-medium mb-1" for="name">
