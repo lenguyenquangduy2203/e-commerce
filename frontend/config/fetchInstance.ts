@@ -8,10 +8,10 @@ export const fetchInstance = async (
   const headers = new Headers(options.headers || {});
   headers.set("Content-Type", "application/json");
 
-  // Retrieve user token from localStorage
+  // Retrieve user token from sessionStorage
   let userToken;
   try {
-    userToken = JSON.parse(localStorage.getItem("user_token") || "null");
+    userToken = JSON.parse(sessionStorage.getItem("user_token") || "null");
   } catch (_error) {
     userToken = undefined;
   }
