@@ -51,7 +51,7 @@ public class SecurityConfig {
         https.csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(request -> request
                 .requestMatchers("/api/test").permitAll()
-                .requestMatchers("/api/analytics/**").hasAnyRole(UserRole.ROLE_MANAGER.toString())
+                .requestMatchers("/api/analytics/**").hasAnyRole(UserRole.ROLE_MANAGER.toString().replace("ROLE_", ""))
                 .anyRequest().authenticated())
             .sessionManagement(session -> session
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS))

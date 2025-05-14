@@ -32,7 +32,7 @@ RUN apk add --no-cache \
 
 COPY --from=builder /install /usr/local
 
-COPY app.py .
+COPY . /app
 
 EXPOSE 8050
 

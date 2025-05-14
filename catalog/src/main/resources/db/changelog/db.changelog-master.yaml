@@ -1,0 +1,11 @@
+databaseChangeLog:
+  - changeSet:
+      id: run-bulk-insert-sql
+      author: LeNguyenQuangDuy
+      context: data
+      changes:
+        - sqlFile:
+            path: db/data/bulk-insert.sql
+            relativeToChangelogFile: false
+            splitStatements: true
+            endDelimiter: ;
