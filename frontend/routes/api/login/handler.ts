@@ -17,8 +17,7 @@ export const handler: Handlers = {
     async POST(req, _ctx) {
         try {
             const body = await req.json();
-            // Corrected URL to match the backend endpoint: /registry/signin
-            const response = await fetch(`${BACKEND_URL}/registry/signin`, {
+            const response = await fetch(`${BACKEND_URL}/api/login`, {
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -28,13 +27,6 @@ export const handler: Handlers = {
 
             const json = await response.json();
 
-            // Check for non-OK HTTP status first
-            if (!response.ok) {
-                 // Assuming backend error responses are in the format { error: "message" }
-                 console.error("Backend error:", json.error);
-                 return new Response(JSON.stringify(json), { status: response.status });
-            }
-            
             // Safe parse to validate response with a fallback
             const result = LoginResponseSchema.safeParse(json);
 

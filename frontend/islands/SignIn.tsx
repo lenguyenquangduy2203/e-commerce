@@ -2,6 +2,9 @@ import { h } from "preact";
 import { useState } from "preact/hooks";
 import { RoleManager } from "../utils/RoleManager.ts";
 
+const BACKEND_BASE_URL = Deno.env.get("BASE_BACKEND_URL") || "http://catalog-backend:8080";
+
+
 export default function SignInIsland() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -12,7 +15,10 @@ export default function SignInIsland() {
     setError("");
 
     try {
-      const response = await fetch("/registry/signin", { // Adjust the endpoint
+      // Construct the full backend API URL for the sign-in endpoint
+      const signInUrl = `${BACKEND_BASE_URL}/registry/signin`;
+
+      const response = await fetch(signInUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
