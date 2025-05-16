@@ -1,6 +1,8 @@
 import { h } from "preact";
 import { useState } from "preact/hooks";
 
+const BACKEND_BASE_URL = Deno.env.get("BASE_BACKEND_URL") || "http://catalog-backend:8080";
+
 export default function SignUpIsland() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -18,7 +20,10 @@ export default function SignUpIsland() {
     }
 
     try {
-      const response = await fetch("/api/signup", {
+      // Construct the full backend API URL for the sign-up endpoint
+      const signUpUrl = `${BACKEND_BASE_URL}/registry/signup`; 
+
+      const response = await fetch(signUpUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, email, password }),
