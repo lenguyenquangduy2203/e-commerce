@@ -1,14 +1,13 @@
-import dash
-from dash import html, dcc, Input, Output, State
 import datetime
 import requests
+from dash import html, dcc, Input, Output, State
 
 from application.customer_processor import calculate_user_type_percentages
 from application.customer_chart import build_user_type_pie_chart
+from app import app  # ⚠️ dùng instance app gốc để đăng ký callback
 
-dash.register_page(__name__, path="/users", name="User Analysis")
-
-layout = html.Div([
+# UI component: chỉ layout thôi
+user_analysis_component = html.Div([
     html.H3("User Type Analysis"),
     
     html.Div([
@@ -25,12 +24,13 @@ layout = html.Div([
     dcc.Graph(id="user-type-pie-chart")
 ])
 
-@dash.callback(
+# Callback xử lý dữ liệu & API
+@app.callback(
     Output("user-type-pie-chart", "figure"),
     Input("submit-user-btn", "n_clicks"),
     State("user-date-picker", "start_date"),
     State("user-date-picker", "end_date"),
-    State("jwt-token", "data")  # ✅ lấy từ store chung của app.py
+    State("jwt-token", "data")  # ⚠️ token từ dcc.Store có sẵn trong app.py
 )
 def update_user_type_chart(n_clicks, start_date, end_date, jwt_token):
     if not jwt_token or not start_date or not end_date:
