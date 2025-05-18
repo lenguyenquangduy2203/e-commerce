@@ -1,6 +1,8 @@
 import { h } from "preact";
 import { useState, useEffect } from "preact/hooks";
 
+const BACKEND_URL = "http://catalog-backend:8080";
+
 export default function CartIsland() {
   const [cartItems, setCartItems] = useState<{ id: number; name: string; quantity: number; price: number }[]>([]);
   const [error, setError] = useState<string>("");

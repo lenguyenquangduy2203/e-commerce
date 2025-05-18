@@ -1,6 +1,8 @@
 import { h } from "preact";
 import { useState, useEffect } from "preact/hooks";
 
+const BACKEND_URL = "http://catalog-backend:8080";
+
 export default function UserDashboardIsland() {
   const [orders, setOrders] = useState<{
     id: number;
@@ -16,7 +18,7 @@ export default function UserDashboardIsland() {
 
   async function fetchOrders() {
     try {
-      const response = await fetch("/api/orders");
+      const response = await fetch(`${BACKEND_URL}/api/orders`);
       if (!response.ok) {
         throw new Error("Failed to fetch orders.");
       }

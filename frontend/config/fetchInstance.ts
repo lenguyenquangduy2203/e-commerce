@@ -11,7 +11,7 @@ export const fetchInstance = async (
   // Retrieve user token from sessionStorage
   let userToken;
   try {
-    userToken = JSON.parse(sessionStorage.getItem("user_token") || "null");
+    userToken = JSON.parse(sessionStorage.getItem("token") || "null");
   } catch (_error) {
     userToken = undefined;
   }

@@ -1,6 +1,9 @@
 import { h } from "preact";
 import { useState, useEffect } from "preact/hooks";
 
+// Use a constant for the backend base URL (client-side islands can't access Deno.env)
+const BACKEND_URL = "http://catalog-backend:8080";
+
 export default function AdminDashboardIsland() {
   const [products, setProducts] = useState<{
     id: number;
@@ -20,7 +23,9 @@ export default function AdminDashboardIsland() {
 
   async function fetchProducts(query = "") {
     try {
-      const response = await fetch(`/api/products?search=${query}`);
+      const response = await fetch(
+        `${BACKEND_URL}/api/products?search=${encodeURIComponent(query)}`
+      );
       if (!response.ok) {
         throw new Error("Failed to fetch products.");
       }
@@ -34,9 +39,12 @@ export default function AdminDashboardIsland() {
 
   async function handleRemoveProduct(productId: number) {
     try {
-      const response = await fetch(`/api/products/${productId}`, {
-        method: "DELETE",
-      });
+      const response = await fetch(
+        `${BACKEND_URL}/api/products/${productId}`,
+        {
+          method: "DELETE",
+        }
+      );
       if (!response.ok) {
         throw new Error("Failed to remove product.");
       }

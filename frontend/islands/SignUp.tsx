@@ -1,7 +1,7 @@
 import { h } from "preact";
 import { useState } from "preact/hooks";
 
-const BACKEND_BASE_URL = Deno.env.get("BASE_BACKEND_URL") || "http://catalog-backend:8080";
+const BACKEND_URL = "http://catalog-backend:8080";
 
 export default function SignUpIsland() {
   const [name, setName] = useState("");
@@ -21,7 +21,7 @@ export default function SignUpIsland() {
 
     try {
       // Construct the full backend API URL for the sign-up endpoint
-      const signUpUrl = `${BACKEND_BASE_URL}/registry/signup`; 
+      const signUpUrl = `${BACKEND_URL}/registry/signup`;
 
       const response = await fetch(signUpUrl, {
         method: "POST",
@@ -34,7 +34,7 @@ export default function SignUpIsland() {
         throw new Error(errorResponse.error || "Failed to create an account.");
       }
 
-      const { _user } = await response.json();
+      // No need to store anything in localStorage/sessionStorage for sign up
       alert("Account created successfully!");
       globalThis.location.href = "/SignIn";
     } catch (err) {
@@ -44,7 +44,7 @@ export default function SignUpIsland() {
   };
 
   return (
-    <form onSubmit={handleSignUp} >
+    <form onSubmit={handleSignUp}>
       {error && <p class="text-red-500 text-sm mb-4">{error}</p>}
       <div class="mb-4">
         <label class="block text-white text-sm font-medium mb-1" for="name">
