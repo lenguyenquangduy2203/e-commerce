@@ -1,10 +1,9 @@
 import datetime
 import requests
-from dash import html, dcc, Input, Output, State
+from dash import Dash, html, dcc, Input, Output, State
 
-from application.customer_processor import calculate_user_type_percentages
-from application.customer_chart import build_user_type_pie_chart
-from app import app  # ⚠️ dùng instance app gốc để đăng ký callback
+from applications.processor import calculate_user_type_percentages
+from applications.pieChart import build_user_type_pie_chart
 
 # UI component: chỉ layout thôi
 user_analysis_component = html.Div([
@@ -13,10 +12,10 @@ user_analysis_component = html.Div([
     html.Div([
         dcc.DatePickerRange(
             id="user-date-picker",
-            min_date_allowed=datetime.date(2020, 1, 1),
-            max_date_allowed=datetime.date.today(),
-            start_date=datetime.date.today() - datetime.timedelta(days=7),
-            end_date=datetime.date.today(),
+            min_date_allowed=datetime.date(2020, 1, 1), # type: ignore
+            max_date_allowed=datetime.date.today(), # type: ignore
+            start_date=datetime.date.today() - datetime.timedelta(days=7), # type: ignore
+            end_date=datetime.date.today(), # type: ignore
         ),
         html.Button("Submit", id="submit-user-btn", n_clicks=0),
     ], style={"marginBottom": "1rem"}),
@@ -24,39 +23,40 @@ user_analysis_component = html.Div([
     dcc.Graph(id="user-type-pie-chart")
 ])
 
-# Callback xử lý dữ liệu & API
-@app.callback(
-    Output("user-type-pie-chart", "figure"),
-    Input("submit-user-btn", "n_clicks"),
-    State("user-date-picker", "start_date"),
-    State("user-date-picker", "end_date"),
-    State("jwt-token", "data")  # ⚠️ token từ dcc.Store có sẵn trong app.py
-)
-def update_user_type_chart(n_clicks, start_date, end_date, jwt_token):
-    if not jwt_token or not start_date or not end_date:
-        return build_user_type_pie_chart({})  # Biểu đồ trống
+def init_user_analysis_handler(app: Dash):
+    # Callback xử lý dữ liệu & API
+    @app.callback(
+        Output("user-type-pie-chart", "figure"),
+        Input("submit-user-btn", "n_clicks"),
+        State("user-date-picker", "start_date"),
+        State("user-date-picker", "end_date"),
+        State("auth-token", "data")  # ⚠️ token từ dcc.Store có sẵn trong app.py
+    )
+    def update_user_type_chart(n_clicks, start_date, end_date, jwt_token):
+        if not jwt_token or not start_date or not end_date:
+            return build_user_type_pie_chart({})  # Biểu đồ trống
 
-    if start_date > end_date:
-        return build_user_type_pie_chart({})  # Ngày không hợp lệ
+        if start_date > end_date:
+            return build_user_type_pie_chart({})  # Ngày không hợp lệ
 
-    headers = {
-        "Authorization": f"Bearer {jwt_token}"
-    }
+        headers = {
+            "Authorization": f"Bearer {jwt_token}"
+        }
 
-    params = {
-        "startDate": start_date,
-        "endDate": end_date,
-        "numerator": 2,
-        "denominator": 3
-    }
+        params = {
+            "startDate": start_date,
+            "endDate": end_date,
+            "numerator": 2,
+            "denominator": 3
+        }
 
-    try:
-        response = requests.get("http://localhost:8080/api/analytics/users", headers=headers, params=params)
-        response.raise_for_status()
-        data = response.json()
-    except Exception as e:
-        print("API error:", e)
-        return build_user_type_pie_chart({})
+        try:
+            response = requests.get("http://backend:8080/api/analytics/users", headers=headers, params=params)
+            response.raise_for_status()
+            data = response.json()
+        except Exception as e:
+            print("API error:", e, flush=True)
+            return build_user_type_pie_chart({})
 
-    percentages = calculate_user_type_percentages(data)
-    return build_user_type_pie_chart(percentages)
+        percentages = calculate_user_type_percentages(data)
+        return build_user_type_pie_chart(percentages)
