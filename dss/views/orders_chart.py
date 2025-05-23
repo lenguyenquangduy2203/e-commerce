@@ -16,11 +16,13 @@ def orders_chart(title, chart_id):
                     id=f"orders-chart-start-date",
                     placeholder="Start Date",
                     display_format="YYYY-MM-DD"
+                    date=None
                 )),
                 dbc.Col(dcc.DatePickerSingle(
                     id=f"orders-chart-end-date",
                     placeholder="End Date",
                     display_format="YYYY-MM-DD"
+                    date=None
                 )),
                 dbc.Col(dbc.Button("Load Data", id=f"orders-chart-submit", color="primary"))
             ], className="mb-3"),
@@ -38,6 +40,7 @@ def init_orders_chart_handler(app: Dash):
         State("auth-token", "data"),
     )
     def update_orders_chart(n_clicks, start_date, end_date, token_data):
+        print(f"n_clicks: {n_clicks}, start_date: {start_date}, end_date: {end_date}, token: {token_data}")
         if not token_data:
             return px.bar(title="No JWT Token Found")
 
