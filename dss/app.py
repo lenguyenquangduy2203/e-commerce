@@ -1,7 +1,7 @@
 from dash import Dash, dcc
 import dash_bootstrap_components as dbc
 from dash import html
-from views.sample import graph_placeholder
+from views.products_chart import products_chart
 from web.token import init_token_handler
 
 # Create the Dash app with Bootstrap
@@ -12,11 +12,9 @@ app.layout = dbc.Container([
     dcc.Store(id="auth-token"),
     dcc.Interval(id='load-token-once', interval=500, n_intervals=0, max_intervals=1),
     dbc.Row([
-        dbc.Col(html.H1("Simple DSS Dashboard"), className="mb-4 mt-4")
+        dbc.Col(html.H1("Product Analytics Dashboard"), className="mb-4 mt-4")
     ]),
-    graph_placeholder("Sine Wave Placeholder"),
-    graph_placeholder("Cosine Wave Placeholder"),
-    graph_placeholder("Combined Wave Placeholder")
+    products_chart("Product Stock Levels", "products-chart")
 ], fluid=True)
 
 init_token_handler(app)
