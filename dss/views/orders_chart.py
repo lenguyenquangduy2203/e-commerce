@@ -33,8 +33,8 @@ def init_orders_chart_handler(app: Dash):
     @app.callback(
         Output("orders-chart-figure", "figure"),
         Input("orders-chart-submit", "n_clicks"),
-        State("orders-chart-start-date", "start_date"),
-        State("orders-chart-end-date", "end_date"),
+        State("orders-chart-start-date", "date"),
+        State("orders-chart-end-date", "date"),
         State("auth-token", "data"),
     )
     def update_orders_chart(n_clicks, start_date, end_date, token_data):
