@@ -51,9 +51,11 @@ def init_user_analysis_handler(app: Dash):
         }
 
         try:
+            print("Headers:", headers, flush=True)
             response = requests.get("http://backend:8080/api/analytics/users", headers=headers, params=params)
             response.raise_for_status()
             data = response.json()
+            print("Data:", data, flush=True)
         except Exception as e:
             print("API error:", e, flush=True)
             return build_user_type_pie_chart({})
