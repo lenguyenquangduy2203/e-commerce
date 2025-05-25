@@ -5,15 +5,11 @@ def init_token_handler(app: Dash):
     app.clientside_callback(
         """
         function(n_intervals) {
-            if (n_intervals > 0) {
-                return sessionStorage.getItem('token');
-            }
-
-            return window.dash_clientside.no_update;
+            return sessionStorage.getItem('token') || null;
         }
         """,
         Output('auth-token', 'data'),
-        Input('load-token-once', 'n_intervals')
+        Input('token-sync', 'n_intervals')
     )
 
     @app.callback(
@@ -22,6 +18,6 @@ def init_token_handler(app: Dash):
         prevent_initial_call='initial_duplicate'
     )
     def show_token(token):
-        print(f"Token received from client: {token}" if token else "No token found.")
+        print(f"Token received from client: {token}" if token else "No token found.", flush=True)
 
         return token

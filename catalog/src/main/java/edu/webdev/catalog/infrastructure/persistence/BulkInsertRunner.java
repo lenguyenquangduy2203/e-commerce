@@ -1,6 +1,5 @@
 package edu.webdev.catalog.infrastructure.persistence;
 
-import jakarta.annotation.PostConstruct;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 
