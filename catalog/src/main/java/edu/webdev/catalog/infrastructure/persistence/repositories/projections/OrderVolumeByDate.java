@@ -1,8 +1,8 @@
 package edu.webdev.catalog.infrastructure.persistence.repositories.projections;
 
-import java.time.Instant;
+import java.time.LocalDate;
 
 public interface OrderVolumeByDate {
-    Instant getCreateDate();
+    LocalDate getCreateDate();
     Integer getAmount();
 }
