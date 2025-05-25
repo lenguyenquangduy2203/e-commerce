@@ -1,4 +1,4 @@
-from dash import Dash, html, dcc, Output, Input, State, callback, ctx
+from dash import Dash, html, dcc, Output, Input, State, callback
 import dash_bootstrap_components as dbc
 import pandas as pd
 import plotly.express as px
@@ -17,13 +17,13 @@ def orders_chart(title, chart_id):
                     id="orders-chart-start-date",
                     placeholder="Start Date",
                     display_format="YYYY-MM-DD",
-                    date=default_start  # ✅ Default: 7 days ago # type: ignore
+                    date=default_start  # ✅ Default to 7 days ago
                 )),
                 dbc.Col(dcc.DatePickerSingle(
                     id="orders-chart-end-date",
                     placeholder="End Date",
                     display_format="YYYY-MM-DD",
-                    date=today  # ✅ Default: today # type: ignore
+                    date=today  # ✅ Default to today
                 )),
                 dbc.Col(dbc.Button("Load Data", id="orders-chart-submit", color="primary"))
             ], className="mb-3"),
@@ -38,7 +38,7 @@ def init_orders_chart_handler(app: Dash):
         State("orders-chart-start-date", "date"),
         State("orders-chart-end-date", "date"),
         State("auth-token", "data"),
-        prevent_initial_call=True  # ✅ Avoid triggering on app load
+        prevent_initial_call=True  # ✅ Prevent callback from firing on page load
     )
     def update_orders_chart(n_clicks, start_date, end_date, token_data):
         print(f"Callback triggered: start={start_date}, end={end_date}, token={bool(token_data)}")
@@ -76,9 +76,12 @@ def init_orders_chart_handler(app: Dash):
                 return px.bar(title="No data returned for selected date range")
 
             df = pd.DataFrame(data)
-            df['date'] = pd.to_datetime(df['date'])
+            df['date'] = pd.to_datetime(df['createDate'])  # ✅ Use correct key
+            df['volume'] = df['amount']                    
             df = df.sort_values('date')
+
             fig = px.bar(df, x='date', y='volume', title='Order Volume by Date')
+            fig.update_layout(xaxis_title='Date', yaxis_title='Order Volume')
             return fig
 
         except requests.exceptions.HTTPError as http_err:
