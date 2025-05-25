@@ -5,7 +5,7 @@ def calculate_user_type_percentages(data: List[Dict]) -> Dict[str, float]:
     Tính tỷ lệ phần trăm từng loại khách hàng dựa trên tổng amount.
 
     Args:
-        data (List[Dict]): Danh sách dict với keys: 'user_type' (str), 'amount' (int/float hoặc dict)
+        data (List[Dict]): Danh sách dict với keys: 'userType' (str), 'amount' (int/float hoặc dict)
 
     Returns:
         Dict[str, float]: {'New': x%, 'Returning': y%, ...}
@@ -13,10 +13,11 @@ def calculate_user_type_percentages(data: List[Dict]) -> Dict[str, float]:
     user_type_totals: Dict[str, float] = {}
 
     for entry in data:
-        user_type = entry.get("user_type")
+        # Hỗ trợ cả snake_case và camelCase
+        user_type = entry.get("user_type") or entry.get("userType")
         amount = entry.get("amount")
 
-        # Nếu amount là dict, ví dụ {"value": 123}, thì lấy ra value
+        # Nếu amount là dict, ví dụ {"value": 123}, thì lấy ra giá trị
         if isinstance(amount, dict):
             amount = amount.get("value")
 
