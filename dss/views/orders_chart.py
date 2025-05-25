@@ -1,43 +1,48 @@
-# views/orders_chart.py
-
 from dash import Dash, html, dcc, Output, Input, State, callback, ctx
 import dash_bootstrap_components as dbc
 import pandas as pd
 import plotly.express as px
 import requests
-from datetime import datetime
+from datetime import datetime, timedelta
 
 def orders_chart(title, chart_id):
+    today = datetime.today().date()
+    default_start = today - timedelta(days=7)
+
     return dbc.Card([
         dbc.CardHeader(html.H4(title)),
         dbc.CardBody([
             dbc.Row([
                 dbc.Col(dcc.DatePickerSingle(
-                    id=f"orders-chart-start-date",
+                    id="orders-chart-start-date",
                     placeholder="Start Date",
-                    display_format="YYYY-MM-DD"
+                    display_format="YYYY-MM-DD",
+                    date=default_start  # ✅ Default: 7 days ago
                 )),
                 dbc.Col(dcc.DatePickerSingle(
-                    id=f"orders-chart-end-date",
+                    id="orders-chart-end-date",
                     placeholder="End Date",
-                    display_format="YYYY-MM-DD"
+                    display_format="YYYY-MM-DD",
+                    date=today  # ✅ Default: today
                 )),
-                dbc.Col(dbc.Button("Load Data", id=f"orders-chart-submit", color="primary"))
+                dbc.Col(dbc.Button("Load Data", id="orders-chart-submit", color="primary"))
             ], className="mb-3"),
-            dcc.Loading(dcc.Graph(id=f"orders-chart-figure"))
+            dcc.Loading(dcc.Graph(id="orders-chart-figure"))
         ])
     ], className="mb-4")
 
 def init_orders_chart_handler(app: Dash):
-    # Callback to fetch order volume and update chart
     @app.callback(
         Output("orders-chart-figure", "figure"),
         Input("orders-chart-submit", "n_clicks"),
         State("orders-chart-start-date", "date"),
         State("orders-chart-end-date", "date"),
         State("auth-token", "data"),
+        prevent_initial_call=True  # ✅ Avoid triggering on app load
     )
     def update_orders_chart(n_clicks, start_date, end_date, token_data):
+        print(f"Callback triggered: start={start_date}, end={end_date}, token={bool(token_data)}")
+
         if not token_data:
             return px.bar(title="No JWT Token Found")
 
