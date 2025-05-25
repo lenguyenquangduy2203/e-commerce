@@ -3,6 +3,7 @@ from flask import Flask, jsonify, render_template, request
 from products_data_handler import load_products_data
 from products_data_processor import process_products
 from web.token import get_token
+import pandas as pd
 
 app = Flask(__name__)
 
@@ -24,6 +25,14 @@ def get_product_stock():
 
     try:
         df = load_products_data()
+        # Convert dates to datetime for filtering
+        df['product_date'] = pd.to_datetime(df['product_date'])
+        start_dt = pd.to_datetime(start_date)
+        end_dt = pd.to_datetime(end_date)
+        
+        # Filter data based on date range
+        df = df[(df['product_date'] >= start_dt) & (df['product_date'] <= end_dt)]
+        
         summary = process_products(df)
         data = {
             "labels": [f"{row['product_name']} ({row['product_model']})" for _, row in summary.iterrows()],

@@ -29,8 +29,8 @@ def products_chart(title, chart_id):
 @callback(
     Output("products-chart-figure", "figure"),
     Input("products-chart-submit", "n_clicks"),
-    State("products-chart-start-date", "start_date"),
-    State("products-chart-end-date", "end_date"),
+    State("products-chart-start-date", "date"),
+    State("products-chart-end-date", "date"),
     State("auth-token", "data"),
 )
 def update_products_chart(n_clicks, start_date, end_date, token_data):
