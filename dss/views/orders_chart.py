@@ -17,13 +17,13 @@ def orders_chart(title, chart_id):
                     id="orders-chart-start-date",
                     placeholder="Start Date",
                     display_format="YYYY-MM-DD",
-                    date=default_start  # ✅ Default: 7 days ago
+                    date=default_start  # ✅ Default: 7 days ago # type: ignore
                 )),
                 dbc.Col(dcc.DatePickerSingle(
                     id="orders-chart-end-date",
                     placeholder="End Date",
                     display_format="YYYY-MM-DD",
-                    date=today  # ✅ Default: today
+                    date=today  # ✅ Default: today # type: ignore
                 )),
                 dbc.Col(dbc.Button("Load Data", id="orders-chart-submit", color="primary"))
             ], className="mb-3"),
@@ -70,6 +70,7 @@ def init_orders_chart_handler(app: Dash):
             response = requests.get("http://backend:8080/api/analytics/orders", headers=headers, params=params)
             response.raise_for_status()
             data = response.json()
+            print("Orders Data:", data, flush=True)
 
             if not data:
                 return px.bar(title="No data returned for selected date range")
