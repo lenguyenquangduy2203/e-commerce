@@ -58,7 +58,7 @@ def init_products_chart_handler(app: Dash):
         }
 
         try:
-            response = requests.get("http://localhost:8080/api/sales", headers=headers, params=params)
+            response = requests.get("http://backend:8080/api/analytics/sales", headers=headers, params=params)
             response.raise_for_status()
             data = response.json()
             print("Products Data:", data, flush=True)
