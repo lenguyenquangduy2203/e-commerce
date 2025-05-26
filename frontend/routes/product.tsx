@@ -1,54 +1,28 @@
-import { h as _h } from "preact";
-import { useState, useEffect } from "preact/hooks";
+import { h } from "preact";
+import ProductIsland from "../islands/ProductIsland.tsx";
 
 export default function ProductList() {
-  const [products, setProducts] = useState<{
-    id: number;
-    name: string;
-    model: string;
-    description: string;
-    amount: number;
-    currency: string;
-    stock_quantity: number;
-    category: string;
-  }[]>([]);
-  const [error, setError] = useState<string>("");
-
-  useEffect(() => {
-    async function fetchProducts() {
-      try {
-        const response = await fetch("/api/products");
-        if (!response.ok) {
-          throw new Error("Failed to fetch products.");
-        }
-        const data = await response.json();
-        setProducts(data.products);
-      } catch (err) {
-        const errorMessage = err instanceof Error ? err.message : "An unknown error occurred.";
-        setError(errorMessage);
-      }
-    }
-    fetchProducts();
-  }, []);
-
   return (
-    <div class="p-4">
-      <h1 class="text-2xl font-bold mb-4">Product List</h1>
-      {error && <p class="text-red-500">{error}</p>}
-      <ul>
-        {products.map((product) => (
-          <li key={product.id} class="mb-4">
-            <div class="border p-4 rounded">
-              <h2 class="text-lg font-semibold">{product.name}</h2>
-              <p><strong>Model:</strong> {product.model}</p>
-              <p><strong>Description:</strong> {product.description}</p>
-              <p><strong>Price:</strong> {product.amount} {product.currency}</p>
-              <p><strong>Stock:</strong> {product.stock_quantity}</p>
-              <p><strong>Category:</strong> {product.category}</p>
-            </div>
-          </li>
-        ))}
-      </ul>
+    <div class="relative min-h-screen flex flex-col product-bg">
+      <div class="main-bg"></div>
+      <div class="main-bg-gradient"></div>
+      <header class="flex items-center justify-between px-10 py-6 shadow-md bg-white bg-opacity-90 fixed top-0 left-0 w-full z-50">
+        <div class="flex items-center space-x-2 text-xl font-bold text-gray-800">
+          <img src="/images/logo/online-shop.png" class="w-8 h-8" alt="Logo" />
+          <span>IShopping</span>
+        </div>
+        <nav class="space-x-6 text-sm font-medium text-gray-700">
+          <a href="/" class="hover:text-black">Home</a>
+          <a href="/product" class="hover:text-black">Products</a>
+          <a href="/order" class="hover:text-black">Orders</a>
+          <a href="/userProfile" class="hover:text-black">Profile</a>
+        </nav>
+        <div class="space-x-3 text-gray-600">
+          <a href="/cart" class="hover:text-black">🛒</a>
+          <a href="/userProfile" class="hover:text-black">👤</a>
+        </div>
+      </header>
+      <ProductIsland />
     </div>
   );
 }

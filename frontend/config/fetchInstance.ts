@@ -15,8 +15,8 @@ export const fetchInstance = async (
   } catch (_error) {
     userToken = undefined;
   }
-  if (userToken) {
-    headers.set(userToken.header, userToken.token);
+  if (userToken && userToken.token) {
+    headers.set("Authorization", `Bearer ${userToken.token}`);
   }
 
   // Add headers to the request

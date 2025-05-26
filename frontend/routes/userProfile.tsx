@@ -1,39 +1,33 @@
 import { h } from "preact";
-import { useState, useEffect } from "preact/hooks";
+import UserProfileIsland from "../islands/UserProfileIsland.tsx";
 
 export default function UserProfile() {
-  const [user, setUser] = useState<{ email: string; role: string } | null>(null);
-  const [error, setError] = useState<string>("");
-
-  useEffect(() => {
-    async function fetchUserProfile() {
-      try {
-        const response = await fetch("/api/user");
-        if (!response.ok) {
-          throw new Error("Failed to fetch user profile.");
-        }
-        const data = await response.json();
-        setUser(data.user);
-      } catch (err) {
-        const errorMessage = err instanceof Error ? err.message : "An unknown error occurred.";
-        setError(errorMessage);
-      }
-    }
-    fetchUserProfile();
-  }, []);
-
   return (
-    <div class="p-4">
-      <h1 class="text-2xl font-bold mb-4">User Profile</h1>
-      {error && <p class="text-red-500">{error}</p>}
-      {user ? (
-        <div class="border p-4 rounded">
-          <p><strong>Email:</strong> {user.email}</p>
-          <p><strong>Role:</strong> {user.role}</p>
+    <div class="relative min-h-screen flex flex-col product-bg">
+      <div class="main-bg"></div>
+      <div class="main-bg-gradient"></div>
+      {/* Navbar/Menu */}
+      <header class="relative z-10 flex items-center justify-between px-10 py-6 shadow-md bg-white bg-opacity-90 w-full">
+        <div class="flex items-center space-x-2 text-xl font-bold text-gray-800">
+          <img src="/images/logo/online-shop.png" class="w-8 h-8" alt="Logo" />
+          <span>IShopping</span>
         </div>
-      ) : (
-        <p>Loading...</p>
-      )}
+        <nav class="space-x-6 text-sm font-medium text-gray-700">
+          <a href="/" class="hover:text-black">Home</a>
+          <a href="/product" class="hover:text-black">Products</a>
+          <a href="/order" class="hover:text-black">Orders</a>
+          <a href="/userProfile" class="hover:text-black">Profile</a>
+        </nav>
+        <div class="space-x-3 text-gray-600">
+          <a href="/cart" class="hover:text-black">🛒</a>
+          <a href="/userProfile" class="hover:text-black">👤</a>
+        </div>
+      </header>
+      <main class="flex-1 flex  justify-center pt-32">
+        <div class="bg-white/70 rounded-2xl shadow-2xl px-10 py-10 w-full max-w-4xl">
+          <UserProfileIsland />
+        </div>
+      </main>
     </div>
   );
 }
