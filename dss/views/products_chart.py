@@ -64,17 +64,18 @@ def update_products_chart(n_clicks, start_date, end_date, token_data):
         if not data:
             return px.bar(title="No data returned for selected date range")
 
-        df = pd.DataFrame({
-            'Product': data['labels'],
-            'Stock Quantity': data['values']
-        })
+        # Create DataFrame directly from the list of dictionaries
+        df = pd.DataFrame(data)
+        
+        # Create the combined product name and model for display
+        df['Product'] = df['productName'] + ' (' + df['productModel'] + ')'
         
         fig = px.bar(
             df, 
             x='Product', 
-            y='Stock Quantity',
+            y='quantity',
             title='Product Stock Levels',
-            labels={'Product': 'Product (Model)', 'Stock Quantity': 'Stock Quantity'}
+            labels={'Product': 'Product (Model)', 'quantity': 'Stock Quantity'}
         )
         return fig
 
