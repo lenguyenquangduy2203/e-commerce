@@ -18,14 +18,13 @@ export default function UserDashboard() {
           <span>User Dashboard</span>
         </div>
         <nav class="space-x-6 text-sm font-medium text-gray-700">
-          <a href="#" class="hover:text-black">Home</a>
-          <a href="#" class="hover:text-black">Orders</a>
-          <a href="#" class="hover:text-black">Profile</a>
-          <a href="#" class="hover:text-black">Settings</a>
+          <a href="UserDashboard" class="hover:text-black">Home</a>
+          <a href="product" class="hover:text-black">Products</a>
+          <a href="order" class="hover:text-black">Orders</a>
+          <a href="userProfile" class="hover:text-black">Profile</a>
+          <a href="cart" class="hover:text-black">Cart</a>
+          <a href="settings" class="hover:text-black">Settings</a>
         </nav>
-        <div class="space-x-3 text-gray-600">
-          <a href="/SignOut" class="hover:text-black">Sign Out</a>
-        </div>
           <div class="space-x-3 text-gray-600">
           <button class="hover:text-black">👤</button>
           <button class="hover:text-black">🌙</button>
@@ -101,7 +100,7 @@ export default function UserDashboard() {
             Go to Homepage
           </a>
           <a
-            href="/SignOut"
+            href="/"
             class="bg-red-600 text-white py-3 px-6 rounded-full font-semibold hover:bg-red-700 transition"
           >
             Sign Out

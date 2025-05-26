@@ -17,13 +17,13 @@ def orders_chart(title, chart_id):
                     id="orders-chart-start-date",
                     placeholder="Start Date",
                     display_format="YYYY-MM-DD",
-                    date=default_start  # ✅ Default to 7 days ago
+                    date=default_start  # ✅ Default to 7 days ago # type: ignore
                 )),
                 dbc.Col(dcc.DatePickerSingle(
                     id="orders-chart-end-date",
                     placeholder="End Date",
                     display_format="YYYY-MM-DD",
-                    date=today  # ✅ Default to today
+                    date=today  # ✅ Default to today # type: ignore
                 )),
                 dbc.Col(dbc.Button("Load Data", id="orders-chart-submit", color="primary"))
             ], className="mb-3"),

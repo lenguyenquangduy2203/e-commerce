@@ -1,43 +1,30 @@
 import { h } from "preact";
-import { useState, useEffect } from "preact/hooks";
+import OrderHistoryIsland from "../islands/OrderHistoryIsland.tsx";
 
 export default function OrderHistory() {
-  const [orders, setOrders] = useState<{ id: number; total_price: number; status: string; create_at: string; }[]>([]);
-  const [error, setError] = useState<string>("");
-
-  useEffect(() => {
-    async function fetchOrders() {
-      try {
-        const response = await fetch("/api/orders");
-        if (!response.ok) {
-          throw new Error("Failed to fetch orders.");
-        }
-        const data = await response.json();
-        setOrders(data.orders);
-      } catch (err) {
-        const errorMessage = err instanceof Error ? err.message : "An unknown error occurred.";
-        setError(errorMessage);
-      }
-    }
-    fetchOrders();
-  }, []);
-
   return (
-    <div class="p-4">
-      <h1 class="text-2xl font-bold mb-4">Order History</h1>
-      {error && <p class="text-red-500">{error}</p>}
-      <ul>
-        {orders.map((order) => (
-          <li key={order.id} class="mb-4">
-            <div class="border p-4 rounded">
-              <h2 class="text-lg font-semibold">Order #{order.id}</h2>
-              <p>Total: ${order.total_price}</p>
-              <p>Status: {order.status}</p>
-              <p>Date: {new Date(order.create_at).toLocaleDateString()}</p>
-            </div>
-          </li>
-        ))}
-      </ul>
+    <div class="relative min-h-screen flex flex-col product-bg">
+      <header class="flex items-center justify-between px-10 py-6 shadow-md bg-white bg-opacity-90 fixed top-0 left-0 w-full z-50">
+        <div class="flex items-center space-x-2 text-xl font-bold text-gray-800">
+          <img src="/images/logo/online-shop.png" class="w-8 h-8" alt="Logo" />
+          <span>IShopping</span>
+        </div>
+        <nav class="space-x-6 text-sm font-medium text-gray-700">
+          <a href="/" class="hover:text-black">Home</a>
+          <a href="/product" class="hover:text-black">Products</a>
+          <a href="/order" class="hover:text-black">Orders</a>
+          <a href="/userProfile" class="hover:text-black">Profile</a>
+        </nav>
+        <div class="space-x-3 text-gray-600">
+          <a href="/cart" class="hover:text-black">🛒</a>
+          <a href="/userProfile" class="hover:text-black">👤</a>
+        </div>
+      </header>
+      <main class="flex-1 flex items-center justify-center pt-32">
+        <div class="bg-white/70 rounded-2xl shadow-2xl px-10 py-10 w-full max-w-4xl">
+          <OrderHistoryIsland />
+        </div>
+      </main>
     </div>
   );
 }

@@ -24,9 +24,13 @@ import * as $test_index from "./routes/test/index.tsx";
 import * as $userProfile from "./routes/userProfile.tsx";
 import * as $AdminDashboardIsland from "./islands/AdminDashboardIsland.tsx";
 import * as $CartIsland from "./islands/CartIsland.tsx";
+import * as $OrderHistoryIsland from "./islands/OrderHistoryIsland.tsx";
+import * as $ProductIsland from "./islands/ProductIsland.tsx";
+import * as $ProductSlider from "./islands/ProductSlider.tsx";
 import * as $SignIn_1 from "./islands/SignIn.tsx";
 import * as $SignUp_1 from "./islands/SignUp.tsx";
 import * as $UserDashboardIsland from "./islands/UserDashboardIsland.tsx";
+import * as $UserProfileIsland from "./islands/UserProfileIsland.tsx";
 import type { Manifest } from "$fresh/server.ts";
 
 const manifest = {
@@ -55,9 +59,13 @@ const manifest = {
   islands: {
     "./islands/AdminDashboardIsland.tsx": $AdminDashboardIsland,
     "./islands/CartIsland.tsx": $CartIsland,
+    "./islands/OrderHistoryIsland.tsx": $OrderHistoryIsland,
+    "./islands/ProductIsland.tsx": $ProductIsland,
+    "./islands/ProductSlider.tsx": $ProductSlider,
     "./islands/SignIn.tsx": $SignIn_1,
     "./islands/SignUp.tsx": $SignUp_1,
     "./islands/UserDashboardIsland.tsx": $UserDashboardIsland,
+    "./islands/UserProfileIsland.tsx": $UserProfileIsland,
   },
   baseUrl: import.meta.url,
 } satisfies Manifest;
