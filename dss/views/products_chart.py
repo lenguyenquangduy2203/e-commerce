@@ -67,16 +67,34 @@ def update_products_chart(n_clicks, start_date, end_date, token_data):
         # Create DataFrame directly from the list of dictionaries
         df = pd.DataFrame(data)
         
+        # Verify required columns exist
+        required_columns = ['productName', 'productModel', 'quantity']
+        if not all(col in df.columns for col in required_columns):
+            return px.bar(title="Invalid data format received from server")
+        
         # Create the combined product name and model for display
         df['Product'] = df['productName'] + ' (' + df['productModel'] + ')'
+        
+        # Sort by quantity for better visualization
+        df = df.sort_values('quantity', ascending=False)
         
         fig = px.bar(
             df, 
             x='Product', 
             y='quantity',
             title='Product Stock Levels',
-            labels={'Product': 'Product (Model)', 'quantity': 'Stock Quantity'}
+            labels={'Product': 'Product (Model)', 'quantity': 'Stock Quantity'},
+            color='quantity',  # Add color gradient based on quantity
+            color_continuous_scale='Viridis'  # Use a nice color scale
         )
+        
+        # Improve layout
+        fig.update_layout(
+            xaxis_tickangle=-45,  # Angle the labels for better readability
+            showlegend=False,     # Hide legend since we're using color scale
+            margin=dict(b=100)    # Add bottom margin for angled labels
+        )
+        
         return fig
 
     except requests.exceptions.HTTPError as http_err:
