@@ -1,7 +1,6 @@
 import { h } from "preact";
 import { useState } from "preact/hooks";
-
-const BACKEND_URL = "http://catalog-backend:8080";
+import { fetchInstance } from "../config/fetchInstance.ts";
 
 export default function SignUpIsland() {
   const [name, setName] = useState("");
@@ -21,18 +20,12 @@ export default function SignUpIsland() {
 
     try {
       // Construct the full backend API URL for the sign-up endpoint
-      const signUpUrl = `${BACKEND_URL}/registry/signup`;
+      const signUpUrl = `/registry/signup`;
 
-      const response = await fetch(signUpUrl, {
+      await fetchInstance(signUpUrl, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, email, password }),
       });
-
-      if (!response.ok) {
-        const errorResponse = await response.json();
-        throw new Error(errorResponse.error || "Failed to create an account.");
-      }
 
       // No need to store anything in localStorage/sessionStorage for sign up
       alert("Account created successfully!");

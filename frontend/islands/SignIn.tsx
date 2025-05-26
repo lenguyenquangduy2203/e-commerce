@@ -1,8 +1,7 @@
 import { h } from "preact";
 import { useState } from "preact/hooks";
 import { RoleManager } from "../utils/RoleManager.ts";
-
-const BACKEND_URL = "http://catalog-backend:8080";
+import { fetchInstance } from "../config/fetchInstance.ts";
 
 export default function SignInIsland() {
   const [email, setEmail] = useState("");
@@ -15,11 +14,10 @@ export default function SignInIsland() {
 
     try {
       // Construct the full backend API URL for the sign-in endpoint
-      const signInUrl = `${BACKEND_URL}/registry/signin`;
+      const signInUrl = `/registry/signin`;
 
-      const response = await fetch(signInUrl, {
+      const response = await fetchInstance(signInUrl, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
       });
 
@@ -30,10 +28,7 @@ export default function SignInIsland() {
 
       const { token } = await response.json();
       // Use sessionStorage instead of localStorage
-      sessionStorage.setItem(
-        "token",
-        JSON.stringify({ header: "Authorization", token: `Bearer ${token}` })
-      );
+      sessionStorage.setItem("token", JSON.stringify({ token }));
 
       const userRole = RoleManager.getUserRole(token);
 
