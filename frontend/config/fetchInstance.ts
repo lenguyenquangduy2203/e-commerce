@@ -1,4 +1,5 @@
-const BACKEND_URL = Deno.env.get("BASE_BACKEND_URL") || "http://catalog-backend:8080";
+// const BACKEND_URL = Deno.env.get("BASE_BACKEND_URL") || "http://catalog-backend:8080";
+const BACKEND_URL = "http://localhost:8080";
 
 export const fetchInstance = async (
   url: string,

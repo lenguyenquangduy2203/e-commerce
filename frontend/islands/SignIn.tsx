@@ -32,15 +32,16 @@ export default function SignInIsland() {
 
       const userRole = RoleManager.getUserRole(token);
 
-      if (userRole === "admin") {
+      if (userRole === "ROLE_ADMIN") {
         globalThis.location.href = "/AdminDashboard";
-      } else if (userRole === "customer") {
+      } else if (userRole === "ROLE_USER") {
         globalThis.location.href = "/UserDashboard";
       } else {
         setError("Unauthorized role. Please contact support.");
       }
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : "An unknown error occurred.";
+      // const errorMessage = err instanceof Error ? err.message : "An unknown error occurred.";
+      const errorMessage = "An unknown error occurred when sign up.";
       setError(errorMessage);
     }
   };
