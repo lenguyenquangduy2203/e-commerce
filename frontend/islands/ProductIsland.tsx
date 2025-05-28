@@ -7,10 +7,10 @@ export default function ProductIsland() {
     id: number;
     name: string;
     model: string;
-    description: string;
-    amount: number;
+    description: string; // This field is not in ProductSummaryResponse, will be undefined.
+    amount: number; // Backend uses 'price', this will be undefined.
     currency: string;
-    stock_quantity: number;
+    stock_quantity: number; // Backend uses 'stockQuantity', this will be undefined.
     category: string;
   }[]>([]);
   const [error, setError] = useState<string>("");
@@ -18,7 +18,8 @@ export default function ProductIsland() {
   useEffect(() => {
     async function fetchProducts() {
       try {
-        const response = await fetchInstance(`/api/products`);
+        const response = await fetchInstance(`/products/search`); // Adjust the endpoint
+        // backend's /products/search endpoint returns a paginated response (Page<ProductSummaryResponse>), where the actual list of products is nested under a content field. The current frontend expects a direct data.products array.
         const data = await response.json();
         setProducts(data.products);
       } catch (err) {
