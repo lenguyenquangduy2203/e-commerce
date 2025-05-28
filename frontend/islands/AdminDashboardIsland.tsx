@@ -2,25 +2,38 @@ import { h } from "preact";
 import { useState, useEffect } from "preact/hooks";
 import { fetchInstance } from "../config/fetchInstance.ts";
 
+interface ProductSummary {
+  id: number; // Assuming backend Long ID maps to number in JS/TS
+  name: string;
+  model: string;
+  price: number; // Matches backend BigDecimal 'price' field
+  currency: string;
+  stockQuantity: number; // Matches backend 'stockQuantity' field name
+  category: string;
+  // description is NOT part of ProductSummaryResponse, so it's omitted
+}
+
+// Define the type for the paginated response from the backend search endpoint
+interface PaginatedResponse {
+    content: ProductSummary[]; // list of products
+    totalPages: number;
+    totalElements: number;
+}
+
 export default function AdminDashboardIsland() {
-  const [products, setProducts] = useState<{
-    id: number;
-    name: string;
-    model: string;
-    amount: number;
-    currency: string;
-    stock_quantity: number;
-    category: string;
-  }[]>([]);
+  // Updated products state type to match ProductSummary interface
+  const [products, setProducts] = useState<ProductSummary[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [error, setError] = useState<string>("");
 
+ // Added 'description' field to newProduct state, and updated amount/stock_quantity to match backend
   const [newProduct, setNewProduct] = useState({
     name: "",
     model: "",
-    amount: "",
+    description: "", // Added description field
+    price: "", // Changed from 'amount' to 'price'
     currency: "",
-    stock_quantity: "",
+    stockQuantity: "", // Changed from 'stock_quantity' to 'stockQuantity'
     category: "",
   });
   const [adding, setAdding] = useState(false);
@@ -30,15 +43,33 @@ export default function AdminDashboardIsland() {
   }, []);
 
   async function fetchProducts(query = "") {
+    setError(""); // Clear previous errors
     try {
+      // Corrected API path to /products/search
+      // Pass search query as 'keyword' parameter for general search
+      // Added default pagination and sorting parameters
       const response = await fetchInstance(
-        `/api/products?search=${encodeURIComponent(query)}`
+        `/products/search?keyword=${encodeURIComponent(query)}&page=0&size=10&sortBy=name&sortDirection=asc`
       );
-      const data = await response.json();
-      setProducts(data.products);
+
+      if (!response.ok) {
+        const errorResponse = await response.json();
+        const errorMessage = errorResponse.error || "Failed to fetch products.";
+        throw new Error(errorMessage);
+      }
+      
+      const data: PaginatedResponse = await response.json();
+      // Extract products from the 'content' field of the paginated response
+      if (data && data.content) {
+        setProducts(data.content);
+      } else {
+        console.error("Unexpected response format:", data);
+        throw new Error("Received unexpected data format from server.");
+      }
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : "An unknown error occurred.";
       setError(errorMessage);
+      console.error("Product Fetch Error:", err);
     }
   }
   useEffect(() => {
@@ -57,17 +88,29 @@ export default function AdminDashboardIsland() {
     setAdding(true);
     setError("");
     try {
-      await fetchInstance(`/api/products`, {
+      // Corrected API path to /products
+      const response = await fetchInstance(`/products`, {
         method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify({
           name: newProduct.name,
           model: newProduct.model,
-          amount: Number(newProduct.amount),
+          description: newProduct.description, // Include description
+          price: Number(newProduct.price), // Changed from 'amount' to 'price'
           currency: newProduct.currency,
-          stock_quantity: Number(newProduct.stock_quantity),
+          stockQuantity: Number(newProduct.stockQuantity), // Changed from 'stock_quantity' to 'stockQuantity'
           category: newProduct.category,
         }),
       });
+
+      if (!response.ok) {
+        const errorResponse = await response.json();
+        const errorMessage = errorResponse.error || "Failed to add product.";
+        throw new Error(errorMessage);
+      }
+
       setNewProduct({ name: "", model: "", amount: "", currency: "", stock_quantity: "", category: "" });
       fetchProducts();
     } catch (err) {
@@ -79,20 +122,31 @@ export default function AdminDashboardIsland() {
   }
 
   async function handleRemoveProduct(productId: number) {
+    setError(""); // Clear previous errors
     try {
-      await fetchInstance(
-        `/api/products/${productId}`,
+      // Corrected API path to /products/{id}
+      const response = await fetchInstance(
+        `/products/${productId}`,
         {
-          method: "DELETE",
+          method: "DELETE"
         }
       );
+
+      if (!response.ok) {
+        const errorResponse = await response.json();
+        const errorMessage = errorResponse.error || "Failed to delete product.";
+        throw new Error(errorMessage);
+      }
       fetchProducts();
+
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : "An unknown error occurred.";
       setError(errorMessage);
+      console.error("Delete Product Error:", err);
     }
   }
 
+  // Not touch the rest of the code, just the fetchProducts function to ensure it works with the new backend response structure.
   return (
     <div class="relative min-h-screen flex flex-col bg-cover bg-center" style="background-image: url('/images/background/background3.jpg');">
       <div class="absolute inset-0 bg-gradient-to-b from-white/80 to-blue-200/60 z-0"></div>
