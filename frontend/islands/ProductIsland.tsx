@@ -2,34 +2,58 @@ import { h } from "preact";
 import { useState, useEffect } from "preact/hooks";
 import { fetchInstance } from "../config/fetchInstance.ts";
 
+interface ProductSummary {
+  id: number; // Assuming backend Long ID maps to number in JS/TS
+  name: string;
+  model: string;
+  price: number; // Matches backend BigDecimal 'price' field
+  currency: string;
+  stockQuantity: number; // Matches backend 'stockQuantity' field name
+  category: string;
+  // description is NOT part of ProductSummaryResponse, so it's omitted
+}
+
+// Define the type for the paginated response from the backend search endpoint
+interface PaginatedResponse {
+    content: ProductSummary[]; // list of products
+    totalPages: number;
+    totalElements: number;
+}
+
 export default function ProductIsland() {
-  const [products, setProducts] = useState<{
-    id: number;
-    name: string;
-    model: string;
-    description: string; // This field is not in ProductSummaryResponse, will be undefined.
-    amount: number; // Backend uses 'price', this will be undefined.
-    currency: string;
-    stock_quantity: number; // Backend uses 'stockQuantity', this will be undefined.
-    category: string;
-  }[]>([]);
+  // Updated useState type to be consistent with ProductSummary interface
+  const [products, setProducts] = useState<ProductSummary[]>([]);
   const [error, setError] = useState<string>("");
 
   useEffect(() => {
     async function fetchProducts() {
       try {
         const response = await fetchInstance(`/products/search`); // Adjust the endpoint
-        // backend's /products/search endpoint returns a paginated response (Page<ProductSummaryResponse>), where the actual list of products is nested under a content field. The current frontend expects a direct data.products array.
-        const data = await response.json();
-        setProducts(data.products);
+        // backend's /products/search endpoint returns a paginated response (Page<ProductSummaryResponse>),
+        // where the actual list of products is nested under a content field.
+        if (!response.ok) {
+          const errorResponse = await response.json();
+          const errorMessage = errorResponse.error || "Failed to fetch products.";
+          throw new Error(errorMessage);
+        }
+       const data: PaginatedResponse = await response.json();
+        // Corrected response handling to extract products from the 'content' field
+        if (data && data.content) {
+             setProducts(data.content); // No longer needs casting as types are now consistent
+        } else {
+            console.error("Unexpected response format:", data);
+            throw new Error("Received unexpected data format from server.");
+        }
       } catch (err) {
         const errorMessage = err instanceof Error ? err.message : "An unknown error occurred.";
         setError(errorMessage);
+        console.error("Product Fetch Error:", err);
       }
     }
     fetchProducts();
   }, []);
-
+  
+  // Not touch the rest of the code, just the fetchProducts function to ensure it works with the new backend response structure.
   return (
     <div class="relative min-h-screen flex flex-col product-bg">
       <div class="absolute inset-0 bg-gradient-to-b from-white/80 to-blue-200/60 z-0"></div>
