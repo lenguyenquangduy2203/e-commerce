@@ -231,13 +231,13 @@ public class ProductController {
 
         // Map the Page of backend projections to a Page of response DTOs
         Page<ProductSummaryResponse> responsePage = productSummaryPage.map(summary -> new ProductSummaryResponse(
-             summary.getId(),
-             summary.getName(),
-             summary.getModel(),
-             summary.getAmount(),
-             summary.getCurrency(),
-             summary.getStockQuantity(),
-             summary.getCategory()
+             summary.id(),
+             summary.name(),
+             summary.model(),
+             summary.amount(),
+             summary.currency(),
+             summary.stockQuantity(),
+             summary.category()
         ));
 
 

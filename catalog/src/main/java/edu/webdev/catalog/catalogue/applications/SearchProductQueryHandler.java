@@ -22,6 +22,15 @@ public class SearchProductQueryHandler implements QueryHandler<SearchProductQuer
     public Page<ProductSummary> handle(SearchProductQuery query) {
         Specification<Product> spec = SpecificationUtils.combine(query.buildSpecifications());
         Pageable pageable = query.toPageable();
-        return productRepository.findAllProjectedBy(spec, pageable, ProductSummary.class);
+        Page<Product> productPage = productRepository.findAll(spec, pageable);
+        return productPage.map(product -> new ProductSummary(
+            product.getId(),
+            product.getName(),
+            product.getModel(),
+            product.getAmount(),
+            product.getCurrency(),
+            product.getStockQuantity(),
+            product.getCategory()
+        ));
     }
 }
