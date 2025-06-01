@@ -1,39 +1,43 @@
-import { h } from "preact";
-import { useEffect, useState } from "preact/hooks";
-import { fetchInstance } from "../config/fetchInstance.ts";
+/** @jsxImportSource preact */
+import { FunctionalComponent } from "preact";
+import { useState } from "preact/hooks";
 
-export default function UserProfileIsland() {
-  const [user, setUser] = useState<{ email: string; role: string } | null>(null);
-  const [error, setError] = useState<string>("");
+interface User {
+  name: string;
+  email: string;
+  avatarUrl: string;
+  balance: number;
+}
 
-  useEffect(() => {
-    async function fetchUserProfile() {
-      try {
-        const response = await fetchInstance("/api/user");
-        const data = await response.json();
-        setUser(data.user);
-      } catch (err) {
-        const errorMessage = err instanceof Error ? err.message : "An unknown error occurred.";
-        setError(errorMessage);
-      }
-    }
-    fetchUserProfile();
-  }, []);
+const UserProfileIsland: FunctionalComponent = () => {
+  const [user, setUser] = useState<User>({
+    name: "Trương Hồng Quân",
+    email: "quantruong0307@gmail.com",
+    avatarUrl: "https://i.pravatar.cc/100?img=3",
+    balance: 15200,
+  });
 
   return (
-    <section class="relative z-10 flex-1 p-6 max-w-3xl mx-auto w-full mt-10 flex flex-col items-center">
-      <div class="bg-white/90 rounded-2xl shadow-2xl px-12 py-8 mb-10 mt-4 max-w-2xl w-full flex flex-col items-center">
-        <h1 class="text-3xl font-extrabold mb-2 text-blue-900 text-center drop-shadow">User Profile</h1>
-        {error && <p class="text-red-600 text-sm mb-4 text-center">{error}</p>}
-        {user ? (
-          <div class="w-full flex flex-col items-center">
-            <p class="mb-2 text-lg text-gray-800"><strong>Email:</strong> {user.email}</p>
-            <p class="text-lg text-gray-800"><strong>Role:</strong> {user.role}</p>
-          </div>
-        ) : (
-          <p class="text-center text-gray-500">Loading...</p>
-        )}
+    <div class="bg-white p-6 rounded-2xl shadow-xl w-full max-w-md mx-auto mt-10 text-center">
+      <img
+        src={user.avatarUrl}
+        alt="User avatar"
+        class="w-24 h-24 mx-auto rounded-full border-4 border-blue-500"
+      />
+      <h2 class="mt-4 text-2xl font-bold text-gray-800">{user.name}</h2>
+      <p class="text-gray-500 text-sm">{user.email}</p>
+      <div class="mt-6 bg-gray-100 p-4 rounded-xl">
+        <p class="text-sm text-gray-600">Account Balance</p>
+        <p class="text-2xl font-semibold text-green-600">${user.balance.toLocaleString()}</p>
       </div>
-    </section>
+      <button
+        onClick={() => setUser({ ...user, balance: user.balance + 100 })}
+        class="mt-4 px-4 py-2 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition"
+      >
+        💰 Add $100
+      </button>
+    </div>
   );
-}
+};
+
+export default UserProfileIsland;

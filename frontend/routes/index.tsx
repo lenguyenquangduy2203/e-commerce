@@ -17,12 +17,6 @@ export default function Home() {
           <img src="/images/logo/online-shop.png" class="w-8 h-8" alt="Logo" />
           <span>IShopping</span>
         </div>
-        <nav class="space-x-6 text-sm font-medium text-gray-700">
-          <a href="/" class="hover:text-black">Home</a>
-          <a href="/product" class="hover:text-black">Products</a>
-          <a href="/order" class="hover:text-black">Orders</a>
-          <a href="/userProfile" class="hover:text-black">Profile</a>
-        </nav>
         <div class="space-x-3 text-gray-600">
           <button class="hover:text-black">👤</button>
           <button class="hover:text-black">🌙</button>

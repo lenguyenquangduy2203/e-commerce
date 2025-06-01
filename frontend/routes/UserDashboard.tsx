@@ -23,7 +23,7 @@ export default function UserDashboard() {
           <a href="order" class="hover:text-black">Orders</a>
           <a href="userProfile" class="hover:text-black">Profile</a>
           <a href="cart" class="hover:text-black">Cart</a>
-          <a href="settings" class="hover:text-black">Settings</a>
+          <a href="setting" class="hover:text-black">Settings</a>
         </nav>
           <div class="space-x-3 text-gray-600">
           <button class="hover:text-black">👤</button>
@@ -43,19 +43,19 @@ export default function UserDashboard() {
         {/* Featured Actions */}
         <div class="flex justify-center flex-wrap gap-6 mb-10">
           <a
-            href="/Orders"
+            href="/order"
             class="bg-blue-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-blue-700 transition"
           >
             View Orders
           </a>
           <a
-            href="/Profile"
+            href="/userProfile"
             class="bg-green-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-green-700 transition"
           >
             Edit Profile
           </a>
           <a
-            href="/Settings"
+            href="/setting"
             class="bg-purple-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-purple-700 transition"
           >
             Account Settings

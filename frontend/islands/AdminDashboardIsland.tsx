@@ -10,6 +10,7 @@ interface ProductSummary {
   currency: string;
   stockQuantity: number;
   category: string;
+  description?: string;
 }
 
 interface PaginatedResponse {
@@ -32,6 +33,16 @@ export default function AdminDashboardIsland() {
     category: "",
   });
   const [adding, setAdding] = useState(false);
+  const [editingProductId, setEditingProductId] = useState<number | null>(null);
+  const [editProduct, setEditProduct] = useState({
+    name: "",
+    model: "",
+    description: "",
+    price: "",
+    currency: "",
+    stockQuantity: "",
+    category: "",
+  });
 
   useEffect(() => {
     fetchProducts();
@@ -132,21 +143,23 @@ export default function AdminDashboardIsland() {
     }
   }
 
-  async function handleUpdateProduct(product: ProductSummary) {
+  async function handleUpdateProductSubmit(e: Event) {
+    e.preventDefault();
     setError("");
     try {
-      const response = await fetchInstance(`/products/${product.id}?keyword=${encodeURIComponent(searchQuery)}`, {
+      const response = await fetchInstance(`/products/${editingProductId}?keyword=${encodeURIComponent(searchQuery)}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          name: product.name,
-          model: product.model,
-          price: Number(product.price),
-          currency: product.currency,
-          stockQuantity: Number(product.stockQuantity),
-          category: product.category,
+          name: editProduct.name,
+          model: editProduct.model,
+          description: editProduct.description,
+          price: Number(editProduct.price),
+          currency: editProduct.currency,
+          stockQuantity: Number(editProduct.stockQuantity),
+          category: editProduct.category,
         }),
       });
       if (!response.ok) {
@@ -154,6 +167,7 @@ export default function AdminDashboardIsland() {
         const errorMessage = errorResponse.error || "Failed to update product.";
         throw new Error(errorMessage);
       }
+      setEditingProductId(null);
       fetchProducts();
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : "An unknown error occurred.";
@@ -161,18 +175,26 @@ export default function AdminDashboardIsland() {
     }
   }
 
+  function handleEditClick(product: ProductSummary) {
+    setEditingProductId(product.id);
+    setEditProduct({
+      name: product.name,
+      model: product.model,
+      description: product.description || "",
+      price: String(product.price),
+      currency: product.currency,
+      stockQuantity: String(product.stockQuantity),
+      category: product.category,
+    });
+  }
+
+  function handleCancelEdit() {
+    setEditingProductId(null);
+  }
+
   return (
     <div class="relative min-h-screen flex flex-col bg-cover bg-center" style="background-image: url('/images/background/background3.jpg');">
       <div class="absolute inset-0 bg-gradient-to-b from-white/80 to-blue-200/60 z-0"></div>
-      <header class="relative z-10 flex items-center justify-between px-10 py-6 shadow-md bg-white bg-opacity-90 w-full">
-        <div class="flex items-center space-x-2 text-xl font-bold text-gray-800">
-          <img src="/images/logo/online-shop.png" class="w-8 h-8" alt="Logo" />
-          <span>IShopping Admin</span>
-        </div>
-        <div class="space-x-3 text-gray-600">
-          <button class="hover:text-black" type="button">👤</button>
-        </div>
-      </header>
       <main class="relative z-10 flex-1 p-6">
         <h1 class="text-3xl font-bold text-gray-800 mb-6 flex items-center gap-2">
           <img src="/images/logo/online-shop.png" class="w-10 h-10" alt="Logo" />
@@ -193,6 +215,7 @@ export default function AdminDashboardIsland() {
             <input class="border-2 border-blue-200 rounded px-4 py-3 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition" required placeholder="Currency" value={newProduct.currency} onInput={e => setNewProduct({ ...newProduct, currency: (e.target as HTMLInputElement).value })} />
             <input class="border-2 border-blue-200 rounded px-4 py-3 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition" required placeholder="Stock Quantity" type="number" min="0" value={newProduct.stockQuantity} onInput={e => setNewProduct({ ...newProduct, stockQuantity: (e.target as HTMLInputElement).value })} />
             <input class="border-2 border-blue-200 rounded px-4 py-3 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition" required placeholder="Category" value={newProduct.category} onInput={e => setNewProduct({ ...newProduct, category: (e.target as HTMLInputElement).value })} />
+            <input class="border-2 border-blue-200 rounded px-4 py-3 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition md:col-span-2" required placeholder="Description" value={newProduct.description} onInput={e => setNewProduct({ ...newProduct, description: (e.target as HTMLInputElement).value })} />
           </div>
           <button type="submit" class="mt-6 w-full bg-gradient-to-r from-blue-500 to-blue-700 text-white px-8 py-3 rounded-lg font-semibold text-lg shadow hover:from-blue-600 hover:to-blue-800 transition disabled:opacity-60" disabled={adding}>{adding ? "Adding..." : "Add Product"}</button>
         </form>
@@ -223,40 +246,52 @@ export default function AdminDashboardIsland() {
             <option value="GREATER_THAN">Greater Than</option>
             <option value="EQUAL">Equal</option>
           </select>
-          <button
-            type="button"
-            onClick={() => fetchProducts(searchQuery, searchPrice, searchPriceOperator)}
-            class="bg-gradient-to-r from-blue-500 to-blue-700 text-white px-6 py-3 rounded-lg font-semibold hover:from-blue-600 hover:to-blue-800 transition"
-          >
-            Search
-          </button>
         </div>
         <ul class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {products.map((product) => (
             <li key={product.id} class="bg-white shadow-lg rounded-xl p-6 border border-blue-100 flex flex-col h-full">
-              <div class="flex items-center justify-between mb-2">
-                <h2 class="text-xl font-semibold text-blue-800">{product.name}</h2>
-                <span class="bg-blue-100 text-blue-700 text-xs px-2 py-1 rounded">{product.category}</span>
-              </div>
-              <p class="text-sm text-gray-600 mb-1"><strong>Model:</strong> {product.model}</p>
-              <p class="text-sm text-gray-600 mb-1"><strong>Price:</strong> {Number(product.price).toLocaleString()} {product.currency}</p>
-              <p class="text-sm text-gray-600 mb-1"><strong>Stock:</strong> {Number(product.stockQuantity).toLocaleString()}</p>
-              <div class="flex gap-2 mt-auto pt-4">
-                <button
-                  type="button"
-                  onClick={() => handleRemoveProduct(product.id)}
-                  class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition flex-1"
-                >
-                  Delete
-                </button>
-                <button
-                  type="button"
-                  onClick={() => handleUpdateProduct(product)}
-                  class="bg-yellow-400 text-white px-4 py-2 rounded-lg hover:bg-yellow-500 transition flex-1"
-                >
-                  Update
-                </button>
-              </div>
+              {editingProductId === product.id ? (
+                <form onSubmit={handleUpdateProductSubmit} class="flex flex-col gap-2">
+                  <input class="border px-2 py-1 rounded" required placeholder="Name" value={editProduct.name} onInput={e => setEditProduct({ ...editProduct, name: (e.target as HTMLInputElement).value })} />
+                  <input class="border px-2 py-1 rounded" required placeholder="Model" value={editProduct.model} onInput={e => setEditProduct({ ...editProduct, model: (e.target as HTMLInputElement).value })} />
+                  <input class="border px-2 py-1 rounded" required placeholder="Price" type="number" min="0" value={editProduct.price} onInput={e => setEditProduct({ ...editProduct, price: (e.target as HTMLInputElement).value })} />
+                  <input class="border px-2 py-1 rounded" required placeholder="Currency" value={editProduct.currency} onInput={e => setEditProduct({ ...editProduct, currency: (e.target as HTMLInputElement).value })} />
+                  <input class="border px-2 py-1 rounded" required placeholder="Stock Quantity" type="number" min="0" value={editProduct.stockQuantity} onInput={e => setEditProduct({ ...editProduct, stockQuantity: (e.target as HTMLInputElement).value })} />
+                  <input class="border px-2 py-1 rounded" required placeholder="Category" value={editProduct.category} onInput={e => setEditProduct({ ...editProduct, category: (e.target as HTMLInputElement).value })} />
+                  <input class="border px-2 py-1 rounded" required placeholder="Description" value={editProduct.description} onInput={e => setEditProduct({ ...editProduct, description: (e.target as HTMLInputElement).value })} />
+                  <div class="flex gap-2 mt-2">
+                    <button type="submit" class="bg-yellow-500 text-white px-3 py-1 rounded">Save</button>
+                    <button type="button" class="bg-gray-300 px-3 py-1 rounded" onClick={handleCancelEdit}>Cancel</button>
+                  </div>
+                </form>
+              ) : (
+                <>
+                  <div class="flex items-center justify-between mb-2">
+                    <h2 class="text-xl font-semibold text-blue-800">{product.name}</h2>
+                    <span class="bg-blue-100 text-blue-700 text-xs px-2 py-1 rounded">{product.category}</span>
+                  </div>
+                  <p class="text-sm text-gray-600 mb-1"><strong>Model:</strong> {product.model}</p>
+                  <p class="text-sm text-gray-600 mb-1"><strong>Price:</strong> {Number(product.price).toLocaleString()} {product.currency}</p>
+                  <p class="text-sm text-gray-600 mb-1"><strong>Stock:</strong> {Number(product.stockQuantity).toLocaleString()}</p>
+                  <p class="text-sm text-gray-600 mb-1"><strong>Description:</strong> {product.description || "-"}</p>
+                  <div class="flex gap-2 mt-auto pt-4">
+                    <button
+                      type="button"
+                      onClick={() => handleRemoveProduct(product.id)}
+                      class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition flex-1"
+                    >
+                      Delete
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => handleEditClick(product)}
+                      class="bg-yellow-400 text-white px-4 py-2 rounded-lg hover:bg-yellow-500 transition flex-1"
+                    >
+                      Update
+                    </button>
+                  </div>
+                </>
+              )}
             </li>
           ))}
         </ul>

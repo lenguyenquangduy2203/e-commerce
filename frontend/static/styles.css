@@ -51,6 +51,9 @@ header {
 
 /* Make main content stand out on background */
 main {
-  background: rgba(255,255,255,0.10);
+  background: rgba(255, 255, 255, 0.4); /* trắng trong suốt nhẹ */
   border-radius: 1rem;
+  backdrop-filter: blur(8px); /* làm mờ background phía sau */
+  -webkit-backdrop-filter: blur(8px); /* Safari support */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05); /* đổ bóng nhẹ */
 }

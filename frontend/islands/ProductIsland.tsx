@@ -55,10 +55,9 @@ export default function ProductIsland() {
   
   // Not touch the rest of the code, just the fetchProducts function to ensure it works with the new backend response structure.
   return (
-    <div class="relative min-h-screen flex flex-col product-bg">
-      <div class="absolute inset-0 bg-gradient-to-b from-white/80 to-blue-200/60 z-0"></div>
+    <div class="min-h-screen flex flex-col bg-transparent">
       {/* Navbar/Menu */}
-      <header class="relative z-10 flex items-center justify-between px-10 py-6 shadow-md bg-white bg-opacity-90 w-full">
+      <header class="relative z-10 flex items-center justify-between px-10 py-6 shadow-md bg-white/80 backdrop-blur-md w-full">
         <div class="flex items-center space-x-2 text-xl font-bold text-gray-800">
           <img src="/images/logo/online-shop.png" class="w-8 h-8" alt="Logo" />
           <span>IShopping</span>
@@ -74,18 +73,17 @@ export default function ProductIsland() {
           <a href="/userProfile" class="hover:text-black">👤</a>
         </div>
       </header>
-      <div class="relative z-10 w-full max-w-3xl mx-auto p-8 mt-24 rounded-2xl shadow-2xl bg-white/80 backdrop-blur">
+      <div class="border border-blue-200 p-6 rounded-xl bg-white/70 backdrop-blur-sm shadow-md hover:shadow-lg transition">
         <h1 class="text-3xl font-extrabold mb-6 text-blue-900 text-center drop-shadow">Product List</h1>
         {error && <p class="text-red-500 text-center mb-4">{error}</p>}
         <ul>
           {products.map((product) => (
             <li key={product.id} class="mb-6">
-              <div class="border border-blue-200 p-6 rounded-xl bg-white/90 shadow-md hover:shadow-lg transition">
+              <div class="border border-blue-200 p-6 rounded-xl bg-white shadow-md hover:shadow-lg transition">
                 <h2 class="text-xl font-semibold text-blue-800 mb-2">{product.name}</h2>
                 <p class="text-gray-700 mb-1"><strong>Model:</strong> {product.model}</p>
-                <p class="text-gray-700 mb-1"><strong>Description:</strong> {product.description}</p>
-                <p class="text-gray-900 font-bold mb-1"><strong>Price:</strong> {product.amount} {product.currency}</p>
-                <p class="text-gray-700 mb-1"><strong>Stock:</strong> {product.stock_quantity}</p>
+                <p class="text-gray-900 font-bold mb-1"><strong>Price:</strong> {product.price} {product.currency}</p>
+                <p class="text-gray-700 mb-1"><strong>Stock:</strong> {product.stockQuantity}</p>
                 <p class="text-gray-700"><strong>Category:</strong> {product.category}</p>
               </div>
             </li>

@@ -26,21 +26,20 @@ export default function OrderHistoryIsland() {
   }, []);
 
   return (
-    <section class="relative z-10 flex-1 p-6 max-w-3xl mx-auto w-full mt-10 flex flex-col items-center">
-      <div class="bg-white/90 rounded-2xl shadow-2xl px-12 py-8 mb-10 mt-4 max-w-2xl w-full flex flex-col items-center">
-        <h1 class="text-3xl font-extrabold mb-2 text-blue-900 text-center drop-shadow">Order History</h1>
-      </div>
-      {error && <p class="text-red-600 text-sm mb-4 text-center">{error}</p>}
-      <ul class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {orders.map((order) => (
-          <li key={order.id} class="bg-white shadow-md rounded-lg p-4">
-            <h2 class="text-lg font-semibold text-gray-800 mb-2">Order #{order.id}</h2>
-            <p class="text-sm text-gray-600"><strong>Total:</strong> ${order.total_price}</p>
-            <p class="text-sm text-gray-600"><strong>Status:</strong> {order.status}</p>
-            <p class="text-sm text-gray-600"><strong>Date:</strong> {order.create_at}</p>
+    <div class="min-h-screen flex flex-col bg-transparent">
+      <div class="border border-blue-200 p-6 rounded-xl bg-white/70 backdrop-blur-sm shadow-md hover:shadow-lg transition mt-10 max-w-3xl mx-auto w-full flex flex-col items-center">
+        <h1 class="text-3xl font-extrabold mb-6 text-blue-900 text-center drop-shadow">Order History</h1>
+        {error && <p class="text-red-500 text-center mb-4">{error}</p>}
+        <ul class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
+          {/* Example order card */}
+          <li class="border border-blue-200 p-6 rounded-xl bg-white shadow-md hover:shadow-lg transition mb-2">
+            <h2 class="text-xl font-semibold text-blue-800 mb-2">Order #12345</h2>
+            <p class="text-gray-900 font-bold mb-1"><strong>Total:</strong> $199.99</p>
+            <p class="text-gray-700 mb-1"><strong>Status:</strong> Delivered</p>
+            <p class="text-gray-700"><strong>Date:</strong> 2025-05-30</p>
           </li>
-        ))}
-      </ul>
-    </section>
+        </ul>
+      </div>
+    </div>
   );
 }
