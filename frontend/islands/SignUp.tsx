@@ -30,8 +30,15 @@ export default function SignUpIsland() {
       // No need to store anything in localStorage/sessionStorage for sign up
       alert("Account created successfully!");
       globalThis.location.href = "/SignIn";
-    } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : "An unknown error occurred.";
+    } catch (err: any) {
+      let errorMessage = "An unknown error occurred.";
+      if (err instanceof Error) {
+        errorMessage = err.message;
+      } else if (typeof err === "object" && err !== null && "message" in err) {
+        errorMessage = err.message;
+      } else if (typeof err === "string") {
+        errorMessage = err;
+      }
       setError(errorMessage);
     }
   };

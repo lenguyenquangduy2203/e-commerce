@@ -13,7 +13,7 @@ const UserProfileIsland: FunctionalComponent = () => {
   const [user, setUser] = useState<User>({
     name: "Trương Hồng Quân",
     email: "quantruong0307@gmail.com",
-    avatarUrl: "https://i.pravatar.cc/100?img=3",
+    avatarUrl: "https://i.pravatar.cc/100?img=2",
     balance: 15200,
   });
 

@@ -40,8 +40,12 @@ export default function SignInIsland() {
         setError("Unauthorized role. Please contact support.");
       }
     } catch (err) {
-      // const errorMessage = err instanceof Error ? err.message : "An unknown error occurred.";
-      const errorMessage = "An unknown error occurred when sign up.";
+      let errorMessage = "An unknown error occurred.";
+      if (err instanceof Error) {
+        errorMessage = err.message;
+      } else if (typeof err === "string") {
+        errorMessage = err;
+      }
       setError(errorMessage);
     }
   };
