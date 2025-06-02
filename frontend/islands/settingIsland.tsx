@@ -71,6 +71,7 @@ export default function SettingIsland() {
       <div class="mb-4">
         <label class="block mb-2 font-medium">Theme</label>
         <select
+          title="Theme"
           class="border rounded px-3 py-2 w-full"
           value={theme}
           onChange={e => setTheme((e.target as HTMLSelectElement).value)}

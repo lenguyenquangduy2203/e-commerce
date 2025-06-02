@@ -215,7 +215,6 @@ export default function AdminDashboardIsland() {
             <input class="border-2 border-blue-200 rounded px-4 py-3 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition" required placeholder="Currency" value={newProduct.currency} onInput={e => setNewProduct({ ...newProduct, currency: (e.target as HTMLInputElement).value })} />
             <input class="border-2 border-blue-200 rounded px-4 py-3 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition" required placeholder="Stock Quantity" type="number" min="0" value={newProduct.stockQuantity} onInput={e => setNewProduct({ ...newProduct, stockQuantity: (e.target as HTMLInputElement).value })} />
             <input class="border-2 border-blue-200 rounded px-4 py-3 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition" required placeholder="Category" value={newProduct.category} onInput={e => setNewProduct({ ...newProduct, category: (e.target as HTMLInputElement).value })} />
-            <input class="border-2 border-blue-200 rounded px-4 py-3 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition md:col-span-2" required placeholder="Description" value={newProduct.description} onInput={e => setNewProduct({ ...newProduct, description: (e.target as HTMLInputElement).value })} />
           </div>
           <button type="submit" class="mt-6 w-full bg-gradient-to-r from-blue-500 to-blue-700 text-white px-8 py-3 rounded-lg font-semibold text-lg shadow hover:from-blue-600 hover:to-blue-800 transition disabled:opacity-60" disabled={adding}>{adding ? "Adding..." : "Add Product"}</button>
         </form>
@@ -258,7 +257,6 @@ export default function AdminDashboardIsland() {
                   <input class="border px-2 py-1 rounded" required placeholder="Currency" value={editProduct.currency} onInput={e => setEditProduct({ ...editProduct, currency: (e.target as HTMLInputElement).value })} />
                   <input class="border px-2 py-1 rounded" required placeholder="Stock Quantity" type="number" min="0" value={editProduct.stockQuantity} onInput={e => setEditProduct({ ...editProduct, stockQuantity: (e.target as HTMLInputElement).value })} />
                   <input class="border px-2 py-1 rounded" required placeholder="Category" value={editProduct.category} onInput={e => setEditProduct({ ...editProduct, category: (e.target as HTMLInputElement).value })} />
-                  <input class="border px-2 py-1 rounded" required placeholder="Description" value={editProduct.description} onInput={e => setEditProduct({ ...editProduct, description: (e.target as HTMLInputElement).value })} />
                   <div class="flex gap-2 mt-2">
                     <button type="submit" class="bg-yellow-500 text-white px-3 py-1 rounded">Save</button>
                     <button type="button" class="bg-gray-300 px-3 py-1 rounded" onClick={handleCancelEdit}>Cancel</button>
