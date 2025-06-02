@@ -12,10 +12,12 @@ export default function ProductList() {
           <span>IShopping</span>
         </div>
         <nav class="space-x-6 text-sm font-medium text-gray-700">
-          <a href="/" class="hover:text-black">Home</a>
-          <a href="/product" class="hover:text-black">Products</a>
-          <a href="/order" class="hover:text-black">Orders</a>
-          <a href="/userProfile" class="hover:text-black">Profile</a>
+          <a href="UserDashboard" class="hover:text-black">Home</a>
+          <a href="product" class="hover:text-black">Products</a>
+          <a href="order" class="hover:text-black">Orders</a>
+          <a href="userProfile" class="hover:text-black">Profile</a>
+          <a href="cart" class="hover:text-black">Cart</a>
+          <a href="setting" class="hover:text-black">Settings</a>
         </nav>
         <div class="space-x-3 text-gray-600">
           <a href="/cart" class="hover:text-black">🛒</a>

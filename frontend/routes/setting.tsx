@@ -10,10 +10,12 @@ export default function SettingPage() {
           <span>IShopping</span>
         </div>
         <nav class="space-x-6 text-sm font-medium text-gray-700">
-          <a href="/" class="hover:text-black">Home</a>
-          <a href="/product" class="hover:text-black">Products</a>
-          <a href="/order" class="hover:text-black">Orders</a>
-          <a href="/userProfile" class="hover:text-black">Profile</a>
+          <a href="UserDashboard" class="hover:text-black">Home</a>
+          <a href="product" class="hover:text-black">Products</a>
+          <a href="order" class="hover:text-black">Orders</a>
+          <a href="userProfile" class="hover:text-black">Profile</a>
+          <a href="cart" class="hover:text-black">Cart</a>
+          <a href="setting" class="hover:text-black">Settings</a>
         </nav>
       </header>
       <main class="flex-1 flex flex-col items-center justify-center">
