@@ -10,6 +10,7 @@ interface ProductSummary {
   currency: string;
   stockQuantity: number;
   category: string;
+  description?: string;
 }
 
 interface PaginatedResponse {
@@ -25,6 +26,8 @@ export default function AdminDashboardIsland() {
   const [newProduct, setNewProduct] = useState({
     name: "",
     model: "",
+    // description removed from UI, but kept in state for API
+    description: "",
     price: "",
     currency: "",
     stockQuantity: "",
@@ -35,6 +38,8 @@ export default function AdminDashboardIsland() {
   const [editProduct, setEditProduct] = useState({
     name: "",
     model: "",
+    // description removed from UI, but kept in state for API
+    description: "",
     price: "",
     currency: "",
     stockQuantity: "",
@@ -97,6 +102,7 @@ export default function AdminDashboardIsland() {
         body: JSON.stringify({
           name: newProduct.name,
           model: newProduct.model,
+          description: newProduct.description,
           price: Number(newProduct.price),
           currency: newProduct.currency,
           stockQuantity: Number(newProduct.stockQuantity),
@@ -108,7 +114,7 @@ export default function AdminDashboardIsland() {
         const errorMessage = errorResponse.error || "Failed to add product.";
         throw new Error(errorMessage);
       }
-      setNewProduct({ name: "", model: "", price: "", currency: "", stockQuantity: "", category: "" });
+      setNewProduct({ name: "", model: "", description: "", price: "", currency: "", stockQuantity: "", category: "" });
       fetchProducts();
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : "An unknown error occurred.";
@@ -151,6 +157,7 @@ export default function AdminDashboardIsland() {
         body: JSON.stringify({
           name: editProduct.name,
           model: editProduct.model,
+          description: editProduct.description,
           price: Number(editProduct.price),
           currency: editProduct.currency,
           stockQuantity: Number(editProduct.stockQuantity),
@@ -175,6 +182,7 @@ export default function AdminDashboardIsland() {
     setEditProduct({
       name: product.name,
       model: product.model,
+      description: product.description || "",
       price: String(product.price),
       currency: product.currency,
       stockQuantity: String(product.stockQuantity),
@@ -209,6 +217,7 @@ export default function AdminDashboardIsland() {
             <input class="border-2 border-blue-200 rounded-lg px-4 py-3 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition text-gray-700 placeholder-gray-400 bg-white/80" required placeholder="Currency" value={newProduct.currency} onInput={e => setNewProduct({ ...newProduct, currency: (e.target as HTMLInputElement).value })} />
             <input class="border-2 border-blue-200 rounded-lg px-4 py-3 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition text-gray-700 placeholder-gray-400 bg-white/80" required placeholder="Stock Quantity" type="number" min="0" value={newProduct.stockQuantity} onInput={e => setNewProduct({ ...newProduct, stockQuantity: (e.target as HTMLInputElement).value })} />
             <input class="border-2 border-blue-200 rounded-lg px-4 py-3 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition text-gray-700 placeholder-gray-400 bg-white/80" required placeholder="Category" value={newProduct.category} onInput={e => setNewProduct({ ...newProduct, category: (e.target as HTMLInputElement).value })} />
+            {/* Description input removed from add form */}
           </div>
           <button type="submit" class="mt-8 w-full bg-gradient-to-r from-blue-500 to-blue-700 text-white px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:from-blue-600 hover:to-blue-800 hover:scale-105 hover:shadow-2xl transition-transform focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 disabled:opacity-60" disabled={adding}>{adding ? "Adding..." : "Add Product"}</button>
         </form>
@@ -251,6 +260,7 @@ export default function AdminDashboardIsland() {
                   <input class="border px-3 py-2 rounded-lg" required placeholder="Currency" value={editProduct.currency} onInput={e => setEditProduct({ ...editProduct, currency: (e.target as HTMLInputElement).value })} />
                   <input class="border px-3 py-2 rounded-lg" required placeholder="Stock Quantity" type="number" min="0" value={editProduct.stockQuantity} onInput={e => setEditProduct({ ...editProduct, stockQuantity: (e.target as HTMLInputElement).value })} />
                   <input class="border px-3 py-2 rounded-lg" required placeholder="Category" value={editProduct.category} onInput={e => setEditProduct({ ...editProduct, category: (e.target as HTMLInputElement).value })} />
+                  {/* Description input removed from edit form */}
                   <div class="flex gap-2 mt-2">
                     <button type="submit" class="bg-yellow-500 text-white px-4 py-2 rounded-lg font-semibold hover:bg-yellow-600 transition flex-1">Save</button>
                     <button type="button" class="bg-gray-300 px-4 py-2 rounded-lg font-semibold hover:bg-gray-400 transition flex-1" onClick={handleCancelEdit}>Cancel</button>
@@ -265,6 +275,7 @@ export default function AdminDashboardIsland() {
                   <p class="text-sm text-gray-600 mb-1"><strong>Model:</strong> {product.model}</p>
                   <p class="text-sm text-gray-600 mb-1"><strong>Price:</strong> {Number(product.price).toLocaleString()} {product.currency}</p>
                   <p class="text-sm text-gray-600 mb-1"><strong>Stock:</strong> {Number(product.stockQuantity).toLocaleString()}</p>
+                  {/* Description display removed from product card */}
                   <div class="flex gap-2 mt-auto pt-4">
                     <button
                       type="button"
