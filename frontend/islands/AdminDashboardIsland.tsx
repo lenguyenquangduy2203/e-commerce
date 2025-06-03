@@ -217,7 +217,7 @@ export default function AdminDashboardIsland() {
             <input class="border-2 border-blue-200 rounded-lg px-4 py-3 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition text-gray-700 placeholder-gray-400 bg-white/80" required placeholder="Currency" value={newProduct.currency} onInput={e => setNewProduct({ ...newProduct, currency: (e.target as HTMLInputElement).value })} />
             <input class="border-2 border-blue-200 rounded-lg px-4 py-3 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition text-gray-700 placeholder-gray-400 bg-white/80" required placeholder="Stock Quantity" type="number" min="0" value={newProduct.stockQuantity} onInput={e => setNewProduct({ ...newProduct, stockQuantity: (e.target as HTMLInputElement).value })} />
             <input class="border-2 border-blue-200 rounded-lg px-4 py-3 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition text-gray-700 placeholder-gray-400 bg-white/80" required placeholder="Category" value={newProduct.category} onInput={e => setNewProduct({ ...newProduct, category: (e.target as HTMLInputElement).value })} />
-            {/* Description input removed from add form */}
+            <textarea class="border-2 border-blue-200 rounded-lg px-4 py-3 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition text-gray-700 placeholder-gray-400 bg-white/80 md:col-span-2" placeholder="Description (optional)" value={newProduct.description} onInput={e => setNewProduct({ ...newProduct, description: (e.target as HTMLTextAreaElement).value })} />
           </div>
           <button type="submit" class="mt-8 w-full bg-gradient-to-r from-blue-500 to-blue-700 text-white px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:from-blue-600 hover:to-blue-800 hover:scale-105 hover:shadow-2xl transition-transform focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 disabled:opacity-60" disabled={adding}>{adding ? "Adding..." : "Add Product"}</button>
         </form>
@@ -260,7 +260,7 @@ export default function AdminDashboardIsland() {
                   <input class="border px-3 py-2 rounded-lg" required placeholder="Currency" value={editProduct.currency} onInput={e => setEditProduct({ ...editProduct, currency: (e.target as HTMLInputElement).value })} />
                   <input class="border px-3 py-2 rounded-lg" required placeholder="Stock Quantity" type="number" min="0" value={editProduct.stockQuantity} onInput={e => setEditProduct({ ...editProduct, stockQuantity: (e.target as HTMLInputElement).value })} />
                   <input class="border px-3 py-2 rounded-lg" required placeholder="Category" value={editProduct.category} onInput={e => setEditProduct({ ...editProduct, category: (e.target as HTMLInputElement).value })} />
-                  {/* Description input removed from edit form */}
+                  <textarea class="border px-3 py-2 rounded-lg" placeholder="Description (optional)" value={editProduct.description} onInput={e => setEditProduct({ ...editProduct, description: (e.target as HTMLTextAreaElement).value })} />
                   <div class="flex gap-2 mt-2">
                     <button type="submit" class="bg-yellow-500 text-white px-4 py-2 rounded-lg font-semibold hover:bg-yellow-600 transition flex-1">Save</button>
                     <button type="button" class="bg-gray-300 px-4 py-2 rounded-lg font-semibold hover:bg-gray-400 transition flex-1" onClick={handleCancelEdit}>Cancel</button>
