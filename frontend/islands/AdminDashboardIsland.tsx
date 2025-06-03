@@ -10,7 +10,6 @@ interface ProductSummary {
   currency: string;
   stockQuantity: number;
   category: string;
-  description?: string;
 }
 
 interface PaginatedResponse {
@@ -26,7 +25,6 @@ export default function AdminDashboardIsland() {
   const [newProduct, setNewProduct] = useState({
     name: "",
     model: "",
-    description: "",
     price: "",
     currency: "",
     stockQuantity: "",
@@ -37,7 +35,6 @@ export default function AdminDashboardIsland() {
   const [editProduct, setEditProduct] = useState({
     name: "",
     model: "",
-    description: "",
     price: "",
     currency: "",
     stockQuantity: "",
@@ -100,7 +97,6 @@ export default function AdminDashboardIsland() {
         body: JSON.stringify({
           name: newProduct.name,
           model: newProduct.model,
-          description: newProduct.description,
           price: Number(newProduct.price),
           currency: newProduct.currency,
           stockQuantity: Number(newProduct.stockQuantity),
@@ -112,7 +108,7 @@ export default function AdminDashboardIsland() {
         const errorMessage = errorResponse.error || "Failed to add product.";
         throw new Error(errorMessage);
       }
-      setNewProduct({ name: "", model: "", description: "", price: "", currency: "", stockQuantity: "", category: "" });
+      setNewProduct({ name: "", model: "", price: "", currency: "", stockQuantity: "", category: "" });
       fetchProducts();
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : "An unknown error occurred.";
@@ -155,7 +151,6 @@ export default function AdminDashboardIsland() {
         body: JSON.stringify({
           name: editProduct.name,
           model: editProduct.model,
-          description: editProduct.description,
           price: Number(editProduct.price),
           currency: editProduct.currency,
           stockQuantity: Number(editProduct.stockQuantity),
@@ -180,7 +175,6 @@ export default function AdminDashboardIsland() {
     setEditProduct({
       name: product.name,
       model: product.model,
-      description: product.description || "",
       price: String(product.price),
       currency: product.currency,
       stockQuantity: String(product.stockQuantity),
@@ -271,7 +265,6 @@ export default function AdminDashboardIsland() {
                   <p class="text-sm text-gray-600 mb-1"><strong>Model:</strong> {product.model}</p>
                   <p class="text-sm text-gray-600 mb-1"><strong>Price:</strong> {Number(product.price).toLocaleString()} {product.currency}</p>
                   <p class="text-sm text-gray-600 mb-1"><strong>Stock:</strong> {Number(product.stockQuantity).toLocaleString()}</p>
-                  <p class="text-sm text-gray-600 mb-1"><strong>Description:</strong> {product.description || "-"}</p>
                   <div class="flex gap-2 mt-auto pt-4">
                     <button
                       type="button"
