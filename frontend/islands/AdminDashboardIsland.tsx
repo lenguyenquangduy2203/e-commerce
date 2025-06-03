@@ -157,11 +157,11 @@ export default function AdminDashboardIsland() {
         body: JSON.stringify({
           name: editProduct.name,
           model: editProduct.model,
-          description: editProduct.description,
           price: Number(editProduct.price),
           currency: editProduct.currency,
           stockQuantity: Number(editProduct.stockQuantity),
           category: editProduct.category,
+          // description is intentionally omitted for update
         }),
       });
       if (!response.ok) {
