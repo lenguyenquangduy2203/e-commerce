@@ -20,7 +20,7 @@ public class CreateProductCommandHandler implements CommandHandler<CreateProduct
             .model(command.model().getValue())
             .description(command.description().getValue())
             .amount(command.price().getAmount())
-            .currency(command.price().getCurrency().getSymbol())
+            .currency(command.price().getCurrency().getCurrencyCode())
             .stockQuantity(command.stockQuantity().getValue())
             .category(command.category().getValue())
             .build();
