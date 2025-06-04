@@ -22,6 +22,7 @@ import edu.webdev.catalog.infrastructure.security.profile.UserId;
 import edu.webdev.catalog.infrastructure.security.profile.UserProfile;
 import edu.webdev.catalog.infrastructure.security.profile.UserRole;
 import edu.webdev.catalog.shared.mappers.UserProfileMapper;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 
 @Service
@@ -35,6 +36,7 @@ public class SecurityServiceImpl implements SecurityService {
     private final UserProfileMapper userProfileMapper;
 
     @Override
+    @Transactional
     public void signUp(UserProfile profile) {
         Password encodedPassword = Password.create(passwordEncoder.encode(profile.getPassword().getValue()));
         profile.setPassword(encodedPassword);
