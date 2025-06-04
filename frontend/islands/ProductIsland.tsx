@@ -10,7 +10,7 @@ interface ProductSummary {
   currency: string;
   stockQuantity: number; // Matches backend 'stockQuantity' field name
   category: string;
-  // description is NOT part of ProductSummaryResponse, so it's omitted
+  description?: string; // Optional for robustness
 }
 
 // Define the type for the paginated response from the backend search endpoint
