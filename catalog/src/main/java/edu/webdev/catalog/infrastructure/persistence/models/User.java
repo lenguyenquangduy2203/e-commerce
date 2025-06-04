@@ -3,6 +3,7 @@ package edu.webdev.catalog.infrastructure.persistence.models;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.persistence.Id;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.PrePersist;
@@ -26,7 +27,7 @@ public class User {
     @Column(columnDefinition = "BINARY(16)")
     private UUID id;
 
-    @OneToOne(mappedBy = "user")
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Cart cart;
 
     @Column(unique = true, nullable = false)

@@ -10,7 +10,7 @@ import edu.webdev.catalog.infrastructure.security.SecurityService;
 import edu.webdev.catalog.infrastructure.security.profile.Email;
 import edu.webdev.catalog.infrastructure.security.profile.Password;
 import edu.webdev.catalog.infrastructure.security.profile.UserProfile;
-
+import edu.webdev.catalog.infrastructure.security.profile.UserRole;
 // Import Lombok's RequiredArgsConstructor (for constructor injection)
 import lombok.RequiredArgsConstructor;
 
@@ -65,6 +65,7 @@ public class RegistryController {
         UserProfile newUserProfile = UserProfile.builder()
                                     .email(email)
                                     .password(password)
+                                    .role(UserRole.ROLE_USER) // Default role, can be changed if needed
                                     .build();
 
         securityService.signUp(newUserProfile);
