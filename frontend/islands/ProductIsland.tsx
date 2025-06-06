@@ -78,16 +78,16 @@ export default function ProductIsland() {
       <div class="border border-blue-200 p-6 rounded-xl bg-white/70 backdrop-blur-sm shadow-md hover:shadow-lg transition">
         <h1 class="text-3xl font-extrabold mb-6 text-blue-900 text-center drop-shadow">Product List</h1>
         {error && <p class="text-red-500 text-center mb-4">{error}</p>}
-        <ul>
+        <ul class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 w-full max-w-6xl mx-auto">
           {products.map((product) => (
-            <li key={product.id} class="mb-6">
-              <div class="border border-blue-200 p-6 rounded-xl bg-white shadow-md hover:shadow-lg transition">
-                <h2 class="text-xl font-semibold text-blue-800 mb-2">{product.name}</h2>
-                <p class="text-gray-700 mb-1"><strong>Model:</strong> {product.model}</p>
-                <p class="text-gray-900 font-bold mb-1"><strong>Price:</strong> {product.price} {product.currency}</p>
-                <p class="text-gray-700 mb-1"><strong>Stock:</strong> {product.stockQuantity}</p>
-                <p class="text-gray-700"><strong>Category:</strong> {product.category}</p>
+            <li key={product.id} class="bg-white/90 shadow-xl rounded-2xl p-6 border border-blue-100 flex flex-col h-full transition-transform hover:-translate-y-1 hover:shadow-2xl">
+              <div class="flex items-center justify-between mb-2">
+                <h2 class="text-xl font-bold text-blue-800">{product.name}</h2>
+                <span class="bg-blue-100 text-blue-700 text-xs px-3 py-1 rounded-lg font-semibold">{product.category}</span>
               </div>
+              <p class="text-sm text-gray-600 mb-1"><strong>Model:</strong> {product.model}</p>
+              <p class="text-sm text-gray-600 mb-1"><strong>Price:</strong> {Number(product.price).toLocaleString()} {product.currency}</p>
+              <p class="text-sm text-gray-600 mb-1"><strong>Stock:</strong> {Number(product.stockQuantity).toLocaleString()}</p>
             </li>
           ))}
         </ul>
