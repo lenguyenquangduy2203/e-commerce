@@ -52,9 +52,14 @@ public class SecurityConfig {
             .authorizeHttpRequests(request -> request
                 .requestMatchers("/api/test").permitAll()
                 .requestMatchers("/registry/**").permitAll()
-                .requestMatchers("/api/analytics/**").hasAnyRole(UserRole.ROLE_MANAGER.toString().replace("ROLE_", ""))
-                .requestMatchers("/products/search").hasAnyRole(UserRole.ROLE_USER.toString().replace("ROLE_", ""))
-                .requestMatchers("/products/**").hasAnyRole(UserRole.ROLE_ADMIN.toString().replace("ROLE_", ""))
+                .requestMatchers("/api/analytics/**")
+                    .hasAnyRole(UserRole.ROLE_MANAGER.toString().replace("ROLE_", ""))
+                .requestMatchers("/products/search")
+                    .hasAnyRole(
+                        UserRole.ROLE_USER.toString().replace("ROLE_", ""), 
+                        UserRole.ROLE_ADMIN.toString().replace("ROLE_", ""))
+                .requestMatchers("/products/**")
+                    .hasAnyRole(UserRole.ROLE_ADMIN.toString().replace("ROLE_", ""))
                 .anyRequest().authenticated())
             .sessionManagement(session -> session
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
